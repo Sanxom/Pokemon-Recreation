@@ -7,9 +7,11 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private GameInput gameInput;
     [SerializeField] private LayerMask solidObjectsLayer;
+    [SerializeField] private LayerMask grassLayer;
     [SerializeField] private float moveSpeed;
 
     private Vector2 inputVector;
+    private float overlapRadius = 0.15f;
     private bool isMoving;
 
     private void Update()
@@ -43,6 +45,8 @@ public class Player : MonoBehaviour
         transform.position = targetPos;
 
         isMoving = false;
+
+        CheckForEncounters();
     }
 
     public Vector2 GetPlayerInputVector()
@@ -57,11 +61,22 @@ public class Player : MonoBehaviour
 
     private bool IsWalkable(Vector3 targetPos)
     {
-        if (Physics2D.OverlapCircle(targetPos, 0.1f, solidObjectsLayer) != null)
+        if (Physics2D.OverlapCircle(targetPos, overlapRadius, solidObjectsLayer) != null)
         {
             return false;
         }
 
         return true;
+    }
+
+    private void CheckForEncounters()
+    {
+        if (Physics2D.OverlapCircle(transform.position, overlapRadius, grassLayer) != null)
+        {
+            if (Random.Range(1, 101) <= 10)
+            {
+                print("Encountered wild Pokemon");
+            }
+        }
     }
 }

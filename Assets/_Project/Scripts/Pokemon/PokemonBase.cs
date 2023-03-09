@@ -47,61 +47,26 @@ public class PokemonBase : ScriptableObject
     [SerializeField] private int spDefense;
     [SerializeField] private int speed;
 
+    [SerializeField] private List<LearnableMoves> learnableMoves;
+
     // Properties
-    public string PokemonName 
-    { 
-        get 
-        { 
-            return pokemonName; 
-        } 
-    }
-    public string Description
-    {
-        get
-        {
-            return description;
-        }
-    }
-    public int MaxHealth
-    {
-        get
-        {
-            return maxHealth;
-        }
-    }
-    public int Attack
-    {
-        get
-        {
-            return attack;
-        }
-    }
-    public int Defense
-    {
-        get
-        {
-            return defense;
-        }
-    }
-    public int SpAttack
-    {
-        get
-        {
-            return spAttack;
-        }
-    }
-    public int SpDefense
-    {
-        get
-        {
-            return spDefense;
-        }
-    }
-    public int Speed
-    {
-        get
-        {
-            return speed;
-        }
-    }
+    public List<LearnableMoves> LearnableMoves => learnableMoves;
+    public string PokemonName => pokemonName;
+    public string Description => description;
+    public int MaxHealth => maxHealth;
+    public int Attack => attack;
+    public int Defense => defense;
+    public int SpAttack => spAttack;
+    public int SpDefense => spDefense;
+    public int Speed => speed;
+}
+
+[System.Serializable]
+public class LearnableMoves
+{
+    [SerializeField] private MoveBase moveBase;
+    [SerializeField] private int levelLearned;
+
+    public MoveBase MoveBase { get => moveBase; }
+    public int LevelLearned { get => levelLearned; }
 }

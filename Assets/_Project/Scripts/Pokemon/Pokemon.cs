@@ -8,6 +8,8 @@ public class Pokemon
     private int level;
 
     // Properties
+    public List<Move> Moves { get; set; }
+    public int StartingHealth { get; set; }
     public int MaxHealth
     {
         get
@@ -55,5 +57,17 @@ public class Pokemon
     {
         this.pokemonBase = pokemonBase;
         this.level = level;
+        StartingHealth = pokemonBase.MaxHealth;
+        Moves = new List<Move>();
+
+        // Generate moves
+        foreach (var move in pokemonBase.LearnableMoves)
+        {
+            if (move.LevelLearned <= level)
+                Moves.Add(new Move(move.MoveBase));
+
+            if (Moves.Count >= 4)
+                break;
+        }
     }
 }

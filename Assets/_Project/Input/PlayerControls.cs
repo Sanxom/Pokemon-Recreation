@@ -24,7 +24,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     ""name"": ""PlayerControls"",
     ""maps"": [
         {
-            ""name"": ""Player"",
+            ""name"": ""InGame"",
             ""id"": ""f61578f3-5746-4ddc-8b12-6054e887bedb"",
             ""actions"": [
                 {
@@ -259,6 +259,138 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Menu"",
+            ""id"": ""7253aa13-fada-4ca9-8b50-f880fbcf8f6b"",
+            ""actions"": [
+                {
+                    ""name"": ""MenuUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""d861a17e-ad1b-4b25-9f9d-89b2f1c71c0c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MenuDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""93131501-da12-4582-9f5b-ef71fb025838"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MenuLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""8e36ecae-b999-4429-ae61-f782b50d9f8e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MenuRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""92a4c493-2269-47d9-b0b4-6f03e32a02a2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""a54ef0d9-b143-4064-a30e-3653ce25d17b"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MenuUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""de64b677-68cc-4b3d-8790-f4f71a595cd2"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MenuUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""041f7eb9-3389-414d-9d15-e2edb1cd4a90"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MenuDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""59bd7914-0996-4067-a2bb-1f948ae59236"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MenuDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""278914aa-6045-431d-bd73-2ac7facaa7fd"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MenuLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a8fc9224-c2a8-45c4-9103-808bcee53bf1"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MenuLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cd99884e-4d1f-4f94-a938-4a8166e940f4"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MenuRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1ef2997c-f2fb-4bc8-a531-637f9cc8b7ef"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MenuRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -291,9 +423,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         }
     ]
 }");
-        // Player
-        m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-        m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
+        // InGame
+        m_InGame = asset.FindActionMap("InGame", throwIfNotFound: true);
+        m_InGame_Move = m_InGame.FindAction("Move", throwIfNotFound: true);
+        // Menu
+        m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
+        m_Menu_MenuUp = m_Menu.FindAction("MenuUp", throwIfNotFound: true);
+        m_Menu_MenuDown = m_Menu.FindAction("MenuDown", throwIfNotFound: true);
+        m_Menu_MenuLeft = m_Menu.FindAction("MenuLeft", throwIfNotFound: true);
+        m_Menu_MenuRight = m_Menu.FindAction("MenuRight", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -350,29 +488,29 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // Player
-    private readonly InputActionMap m_Player;
-    private IPlayerActions m_PlayerActionsCallbackInterface;
-    private readonly InputAction m_Player_Move;
-    public struct PlayerActions
+    // InGame
+    private readonly InputActionMap m_InGame;
+    private IInGameActions m_InGameActionsCallbackInterface;
+    private readonly InputAction m_InGame_Move;
+    public struct InGameActions
     {
         private @PlayerControls m_Wrapper;
-        public PlayerActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_Player_Move;
-        public InputActionMap Get() { return m_Wrapper.m_Player; }
+        public InGameActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_InGame_Move;
+        public InputActionMap Get() { return m_Wrapper.m_InGame; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PlayerActions set) { return set.Get(); }
-        public void SetCallbacks(IPlayerActions instance)
+        public static implicit operator InputActionMap(InGameActions set) { return set.Get(); }
+        public void SetCallbacks(IInGameActions instance)
         {
-            if (m_Wrapper.m_PlayerActionsCallbackInterface != null)
+            if (m_Wrapper.m_InGameActionsCallbackInterface != null)
             {
-                @Move.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
-                @Move.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
-                @Move.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
+                @Move.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnMove;
+                @Move.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnMove;
+                @Move.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnMove;
             }
-            m_Wrapper.m_PlayerActionsCallbackInterface = instance;
+            m_Wrapper.m_InGameActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @Move.started += instance.OnMove;
@@ -381,7 +519,64 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
             }
         }
     }
-    public PlayerActions @Player => new PlayerActions(this);
+    public InGameActions @InGame => new InGameActions(this);
+
+    // Menu
+    private readonly InputActionMap m_Menu;
+    private IMenuActions m_MenuActionsCallbackInterface;
+    private readonly InputAction m_Menu_MenuUp;
+    private readonly InputAction m_Menu_MenuDown;
+    private readonly InputAction m_Menu_MenuLeft;
+    private readonly InputAction m_Menu_MenuRight;
+    public struct MenuActions
+    {
+        private @PlayerControls m_Wrapper;
+        public MenuActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @MenuUp => m_Wrapper.m_Menu_MenuUp;
+        public InputAction @MenuDown => m_Wrapper.m_Menu_MenuDown;
+        public InputAction @MenuLeft => m_Wrapper.m_Menu_MenuLeft;
+        public InputAction @MenuRight => m_Wrapper.m_Menu_MenuRight;
+        public InputActionMap Get() { return m_Wrapper.m_Menu; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MenuActions set) { return set.Get(); }
+        public void SetCallbacks(IMenuActions instance)
+        {
+            if (m_Wrapper.m_MenuActionsCallbackInterface != null)
+            {
+                @MenuUp.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnMenuUp;
+                @MenuUp.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnMenuUp;
+                @MenuUp.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnMenuUp;
+                @MenuDown.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnMenuDown;
+                @MenuDown.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnMenuDown;
+                @MenuDown.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnMenuDown;
+                @MenuLeft.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnMenuLeft;
+                @MenuLeft.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnMenuLeft;
+                @MenuLeft.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnMenuLeft;
+                @MenuRight.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnMenuRight;
+                @MenuRight.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnMenuRight;
+                @MenuRight.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnMenuRight;
+            }
+            m_Wrapper.m_MenuActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @MenuUp.started += instance.OnMenuUp;
+                @MenuUp.performed += instance.OnMenuUp;
+                @MenuUp.canceled += instance.OnMenuUp;
+                @MenuDown.started += instance.OnMenuDown;
+                @MenuDown.performed += instance.OnMenuDown;
+                @MenuDown.canceled += instance.OnMenuDown;
+                @MenuLeft.started += instance.OnMenuLeft;
+                @MenuLeft.performed += instance.OnMenuLeft;
+                @MenuLeft.canceled += instance.OnMenuLeft;
+                @MenuRight.started += instance.OnMenuRight;
+                @MenuRight.performed += instance.OnMenuRight;
+                @MenuRight.canceled += instance.OnMenuRight;
+            }
+        }
+    }
+    public MenuActions @Menu => new MenuActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -400,8 +595,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
             return asset.controlSchemes[m_GamepadSchemeIndex];
         }
     }
-    public interface IPlayerActions
+    public interface IInGameActions
     {
         void OnMove(InputAction.CallbackContext context);
+    }
+    public interface IMenuActions
+    {
+        void OnMenuUp(InputAction.CallbackContext context);
+        void OnMenuDown(InputAction.CallbackContext context);
+        void OnMenuLeft(InputAction.CallbackContext context);
+        void OnMenuRight(InputAction.CallbackContext context);
     }
 }

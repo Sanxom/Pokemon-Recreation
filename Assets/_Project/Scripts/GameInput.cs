@@ -9,17 +9,17 @@ public class GameInput : MonoBehaviour
     private void Awake()
     {
         playerControls = new PlayerControls();
-        playerControls.Player.Enable();
+        playerControls.InGame.Enable();
     }
 
     private void OnDestroy()
     {
-        playerControls.Player.Disable();
+        playerControls.InGame.Disable();
     }
 
     public Vector2 GetMovementVectorNormalized()
     {
-        Vector2 inputVector = playerControls.Player.Move.ReadValue<Vector2>();
+        Vector2 inputVector = playerControls.InGame.Move.ReadValue<Vector2>();
 
         inputVector = RemoveDiagonalMovement(inputVector);
 

@@ -51,6 +51,8 @@ public class PokemonBase : ScriptableObject
 
     // Properties
     public List<LearnableMoves> LearnableMoves => learnableMoves;
+    public Sprite FrontSprite => frontSprite;
+    public Sprite BackSprite => backSprite;
     public string PokemonName => pokemonName;
     public string Description => description;
     public int MaxHealth => maxHealth;
@@ -59,6 +61,7 @@ public class PokemonBase : ScriptableObject
     public int SpAttack => spAttack;
     public int SpDefense => spDefense;
     public int Speed => speed;
+
 }
 
 [System.Serializable]

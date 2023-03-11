@@ -17,7 +17,7 @@ MonoBehaviour:
   pokemonName: Bulbasaur
   description: A strange seed was planted on its back at birth. The plant sprouts
     and grows with this Pokemon.
-  type1: 4
+  type1: 5
   type2: 8
   maxHealth: 45
   attack: 49

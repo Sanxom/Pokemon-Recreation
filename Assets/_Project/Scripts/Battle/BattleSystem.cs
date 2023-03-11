@@ -51,7 +51,6 @@ public class BattleSystem : MonoBehaviour
         dialogueBox.SetMoveNames(playerUnit.Pokemon.MoveList);
 
         yield return dialogueBox.TypeDialogue($"A wild {enemyUnit.Pokemon.PokemonBase.PokemonName} appeared.");
-        yield return new WaitForSeconds(1f);
 
         PlayerAction();
     }
@@ -61,14 +60,13 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.Busy;
 
         Move move = playerUnit.Pokemon.MoveList[currentMove];
-        yield return dialogueBox.TypeDialogue($"{playerUnit.Pokemon.PokemonBase.PokemonName} used {move.Base.MoveName}");
+        yield return dialogueBox.TypeDialogue($"{playerUnit.Pokemon.PokemonBase.PokemonName} used {move.Base.MoveName}.");
 
-        yield return new WaitForSeconds(1f);
-
-        bool hasFainted = enemyUnit.Pokemon.TakeDamage(move, playerUnit.Pokemon);
+        DamageDetails damageDetails = enemyUnit.Pokemon.TakeDamage(move, playerUnit.Pokemon);
         yield return enemyHUD.UpdateHealth();
+        yield return ShowDamageDetails(damageDetails);
 
-        if (hasFainted)
+        if (damageDetails.Fainted)
             yield return dialogueBox.TypeDialogue($"{enemyUnit.Pokemon.PokemonBase.PokemonName} fainted.");
         else
         {
@@ -82,19 +80,30 @@ public class BattleSystem : MonoBehaviour
 
         Move move = enemyUnit.Pokemon.GetRandomMove();
 
-        yield return dialogueBox.TypeDialogue($"{enemyUnit.Pokemon.PokemonBase.PokemonName} used {move.Base.MoveName}");
+        yield return dialogueBox.TypeDialogue($"{enemyUnit.Pokemon.PokemonBase.PokemonName} used {move.Base.MoveName}.");
 
-        yield return new WaitForSeconds(1f);
-
-        bool hasFainted = playerUnit.Pokemon.TakeDamage(move, enemyUnit.Pokemon);
+        DamageDetails damageDetails = playerUnit.Pokemon.TakeDamage(move, enemyUnit.Pokemon);
         yield return playerHUD.UpdateHealth();
+        yield return ShowDamageDetails(damageDetails);
 
-        if (hasFainted)
+        if (damageDetails.Fainted)
             yield return dialogueBox.TypeDialogue($"{playerUnit.Pokemon.PokemonBase.PokemonName} fainted.");
         else
         {
             PlayerAction();
         }
+    }
+
+    private IEnumerator ShowDamageDetails(DamageDetails damageDetails)
+    {
+        if (damageDetails.Critical > 1f)
+            yield return dialogueBox.TypeDialogue("A critical hit!");
+
+        if (damageDetails.TypeEffectiveness > 1f)
+            yield return dialogueBox.TypeDialogue("It's super effective!");
+        else if (damageDetails.TypeEffectiveness < 1f)
+            yield return dialogueBox.TypeDialogue("It's not very effective...");
+
     }
 
     private void PlayerAction()

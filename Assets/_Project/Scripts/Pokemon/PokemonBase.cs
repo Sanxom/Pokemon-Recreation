@@ -8,8 +8,8 @@ public enum PokemonType
     Normal,
     Fire,
     Water,
-    Grass,
     Electric,
+    Grass,
     Ice,
     Fighting,
     Poison,
@@ -19,15 +19,15 @@ public enum PokemonType
     Bug,
     Rock,
     Ghost,
-    Dark,
     Dragon,
+    Dark,
     Steel,
     Fairy
 }
 
 public class TypeChart
 {
-    float[][] chart =
+    static float[][] chart =
     {             
                               //NOR   FIR   WAT   ELE   GRA   ICE   FIG   POI   GRO   FLY   PSY   BUG   ROC   GHO   DRA   DAR   STE   FAI
         /*NORMAL*/ new float[] {1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   0.5f, 0,    1f,   1f,   0.5f, 1f },
@@ -49,6 +49,17 @@ public class TypeChart
         /*STEEL*/  new float[] {1f,   0.5f, 0.5f, 0.5f, 1f,   2f,   1f,   1f,   1f,   1f,   1f,   1f,   2f,   1f,   1f,   1f,   0.5f, 2f },
         /*FAIRY*/  new float[] {1f,   0.5f, 1f,   1f,   1f,   1f,   2f,   0.5f, 1f,   1f,   1f,   1f,   1f,   1f,   2f,   2f,   0.5f, 1f }
     };
+
+    public static float GetEffectiveness(PokemonType attackType, PokemonType defenseType)
+    {
+        if (attackType == PokemonType.None || defenseType == PokemonType.None)
+            return 1f;
+
+        int row = (int)attackType - 1;
+        int col = (int)defenseType - 1;
+
+        return chart[row][col];
+    }
 }
 
 [CreateAssetMenu(fileName = "Pokemon", menuName = "Pokemon/Create New Pokemon")]
@@ -79,6 +90,8 @@ public class PokemonBase : ScriptableObject
     public List<LearnableMoves> LearnableMoves => learnableMoves;
     public Sprite FrontSprite => frontSprite;
     public Sprite BackSprite => backSprite;
+    public PokemonType Type1 => type1;
+    public PokemonType Type2 => type2;
     public string PokemonName => pokemonName;
     public string Description => description;
     public int MaxHealth => maxHealth;

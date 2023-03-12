@@ -52,12 +52,29 @@ public class Pokemon
             Fainted = false
         };
 
+        int damage;
         float modifiers = Random.Range(0.85f, 1f) * type * critical;
         float a = (2 * attacker.Level / 5 + 2);
-        float d = (a * move.Base.Power * ((float)attacker.Attack / Defense)) / 50 + 2;
-        int damage = Mathf.FloorToInt(d * modifiers);
-
-        Health -= damage;
+        float d;
+        // TODO: Change this to account for Physical and Special Attack/Defense
+        // TODO: Also refactor to remove these if/elses?
+        if (move.Base.Category1 == Category.Status)
+        {
+            // Apply status effect here?
+        }
+        else if (move.Base.Category2 == Category.Status)
+        {
+            d = (a * move.Base.Power * ((float)attacker.Attack / Defense)) / 50 + 2;
+            damage = Mathf.FloorToInt(d * modifiers);
+            Health -= damage;
+            // Apply status effect here?
+        }
+        else if (move.Base.Category1 != Category.Status && move.Base.Category2 != Category.Status)
+        {
+            d = (a * move.Base.Power * ((float)attacker.Attack / Defense)) / 50 + 2;
+            damage = Mathf.FloorToInt(d * modifiers);
+            Health -= damage;
+        }
 
         if(Health <= 0)
         {

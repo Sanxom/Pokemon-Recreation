@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Tackle
   m_EditorClassIdentifier: 
   type: 1
-  category: 1
+  category1: 1
+  category2: 0
   moveName: Tackle
   description: A full-body charge attack.
   power: 40

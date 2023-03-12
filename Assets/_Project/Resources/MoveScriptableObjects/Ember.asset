@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Ember
   m_EditorClassIdentifier: 
   type: 2
-  category: 2
+  category1: 2
+  category2: 3
   moveName: Ember
   description: An attack that may inflict a burn.
   power: 40

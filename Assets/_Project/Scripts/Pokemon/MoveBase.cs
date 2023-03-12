@@ -14,7 +14,8 @@ public enum Category
 public class MoveBase : ScriptableObject
 {
     [SerializeField] private PokemonType type;
-    [SerializeField] private Category category;
+    [SerializeField] private Category category1;
+    [SerializeField] private Category category2;
 
     [SerializeField] private string moveName;
 
@@ -25,12 +26,13 @@ public class MoveBase : ScriptableObject
     [SerializeField] private int startingPP;
     [SerializeField] private int maxPossiblePP;
 
-    public PokemonType Type { get => type; }
-    public Category Category { get => category; }
-    public string MoveName { get => moveName; }
-    public string Description { get => description; }
-    public int Power { get => power; }
-    public int Accuracy { get => accuracy; }
-    public int StartingPP { get => startingPP; }
-    public int MaxPossiblePP { get => maxPossiblePP; }
+    public PokemonType Type => type;
+    public Category Category1 => category1;
+    public Category Category2 => category2;
+    public string MoveName => moveName;
+    public string Description => description;
+    public int Power => power;
+    public int Accuracy => accuracy;
+    public int StartingPP => startingPP;
+    public int MaxPossiblePP => maxPossiblePP;
 }

@@ -19,13 +19,15 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private BattleHUD enemyHUD;
     [SerializeField] private BattleDialogueBox dialogueBox;
 
+    private WaitForSeconds attackRoutineDelay;
+    private BattleState state;
+    private float attackDelay = 0.5f;
     private int currentAction;
     private int currentMove;
 
-    private BattleState state;
-
     private void Start()
     {
+        attackRoutineDelay = new WaitForSeconds(attackDelay);
         StartCoroutine(SetupBattle());
     }
 
@@ -62,12 +64,19 @@ public class BattleSystem : MonoBehaviour
         Move move = playerUnit.Pokemon.MoveList[currentMove];
         yield return dialogueBox.TypeDialogue($"{playerUnit.Pokemon.PokemonBase.PokemonName} used {move.Base.MoveName}.");
 
+        playerUnit.PlayAttackAnimation();
+        yield return attackRoutineDelay;
+        enemyUnit.PlayHitAnimation();
+
         DamageDetails damageDetails = enemyUnit.Pokemon.TakeDamage(move, playerUnit.Pokemon);
         yield return enemyHUD.UpdateHealth();
         yield return ShowDamageDetails(damageDetails);
 
         if (damageDetails.Fainted)
+        {
             yield return dialogueBox.TypeDialogue($"{enemyUnit.Pokemon.PokemonBase.PokemonName} fainted.");
+            enemyUnit.PlayFaintAnimation();
+        }
         else
         {
             StartCoroutine(PerformEnemyMove());
@@ -82,12 +91,19 @@ public class BattleSystem : MonoBehaviour
 
         yield return dialogueBox.TypeDialogue($"{enemyUnit.Pokemon.PokemonBase.PokemonName} used {move.Base.MoveName}.");
 
+        enemyUnit.PlayAttackAnimation();
+        yield return attackRoutineDelay;
+        playerUnit.PlayHitAnimation();
+
         DamageDetails damageDetails = playerUnit.Pokemon.TakeDamage(move, enemyUnit.Pokemon);
         yield return playerHUD.UpdateHealth();
         yield return ShowDamageDetails(damageDetails);
 
         if (damageDetails.Fainted)
+        {
             yield return dialogueBox.TypeDialogue($"{playerUnit.Pokemon.PokemonBase.PokemonName} fainted.");
+            playerUnit.PlayFaintAnimation();
+        }
         else
         {
             PlayerAction();

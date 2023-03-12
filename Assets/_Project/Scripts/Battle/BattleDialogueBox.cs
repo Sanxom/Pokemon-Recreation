@@ -19,6 +19,18 @@ public class BattleDialogueBox : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private int lettersPerSecond;
 
+    private WaitForSeconds letterAnimationRoutineDelay;
+    private WaitForSeconds dialogueEndRoutineDelay;
+    private float dialogueEndDelay = 1f;
+    private float letterAnimationDelay;
+
+    private void Start()
+    {
+        letterAnimationDelay = 1f / lettersPerSecond;
+        letterAnimationRoutineDelay = new WaitForSeconds(letterAnimationDelay);
+        dialogueEndRoutineDelay = new WaitForSeconds(dialogueEndDelay);
+    }
+
     public void SetDialogue(string dialogueText)
     {
         this.dialogueText.text = dialogueText;
@@ -30,10 +42,10 @@ public class BattleDialogueBox : MonoBehaviour
         foreach (var letter in dialogueText.ToCharArray())
         {
             this.dialogueText.text += letter;
-            yield return new WaitForSeconds(1f / lettersPerSecond);
+            yield return letterAnimationRoutineDelay;
         }
 
-        yield return new WaitForSeconds(1f);
+        yield return dialogueEndRoutineDelay;
     }
 
     public void EnableDialogueText(bool enabled)

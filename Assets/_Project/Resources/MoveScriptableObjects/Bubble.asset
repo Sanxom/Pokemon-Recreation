@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Bubble
   m_EditorClassIdentifier: 
   type: 3
-  category: 2
+  category1: 2
+  category2: 0
   moveName: Bubble
   description: A spray of bubbles hits the target. It may lower the foe's Speed stat.
   power: 40

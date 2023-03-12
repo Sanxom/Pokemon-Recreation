@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Scratch
   m_EditorClassIdentifier: 
   type: 1
-  category: 1
+  category1: 1
+  category2: 0
   moveName: Scratch
   description: Hard, pointed, and sharp claws rake the target.
   power: 40

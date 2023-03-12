@@ -6,8 +6,6 @@ using DG.Tweening;
 
 public class BattleUnit : MonoBehaviour
 {
-    [SerializeField] private PokemonBase pokemonBase;
-    [SerializeField] private int level;
     [SerializeField] private bool isPlayerUnit;
 
     public Pokemon Pokemon { get; set; }
@@ -28,13 +26,15 @@ public class BattleUnit : MonoBehaviour
     private void Awake()
     {
         image = GetComponent<Image>();
+
         originalColor = image.color;
         originalPosition = image.transform.localPosition;
     }
 
-    public void Setup()
+    public void Setup(Pokemon pokemon)
     {
-        Pokemon = new Pokemon(pokemonBase, level);
+        Pokemon = pokemon;
+
         if (isPlayerUnit)
             image.sprite = Pokemon.PokemonBase.BackSprite;
         else

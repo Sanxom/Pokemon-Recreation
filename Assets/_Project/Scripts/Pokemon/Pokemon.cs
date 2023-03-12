@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Pokemon
 {
+    [SerializeField] private PokemonBase pokemonBase;
+    [SerializeField] private int level;
+
     // Properties
-    public PokemonBase PokemonBase { get; set; }
     public List<Move> MoveList { get; set; }
-    public int Level { get; set; }
+    public PokemonBase PokemonBase => pokemonBase;
+    public int Level => level;
     public int Health { get; set; }
     public int MaxHealth => Mathf.FloorToInt((PokemonBase.MaxHealth * Level) / 100f) + 10;
     public int Attack => Mathf.FloorToInt((PokemonBase.Attack * Level) / 100f) + 5;
@@ -16,10 +20,8 @@ public class Pokemon
     public int SpDefense => Mathf.FloorToInt((PokemonBase.SpDefense * Level) / 100f) + 5;
     public int Speed => Mathf.FloorToInt((PokemonBase.Speed * Level) / 100f) + 5;
 
-    public Pokemon(PokemonBase pokemonBase, int level)
+    public void Init()
     {
-        PokemonBase = pokemonBase;
-        Level = level;
         Health = MaxHealth;
         MoveList = new List<Move>();
 
@@ -64,8 +66,7 @@ public class Pokemon
         float modifiers = Random.Range(0.85f, 1f) * type * critical * stab;
         float a = (2 * attacker.Level / 5 + 2);
         float d;
-        // TODO: Change this to account for Physical and Special Attack/Defense
-        // TODO: Also refactor to remove these if/elses?
+        // TODO: Refactor to remove these if/elses?
         if (move.Base.Category1 == Category.Status)
         {
             // Apply status effect here?

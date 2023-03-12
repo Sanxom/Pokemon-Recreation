@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 15673520}
   - component: {fileID: 15673519}
+  - component: {fileID: 15673521}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -171,6 +172,25 @@ Transform:
   m_Father: {fileID: 565463961}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &15673521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 15673518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc4c6a8cf08b6b14b9a0273c010138dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wildPokemonList:
+  - pokemonBase: {fileID: 11400000, guid: cc12eac93b06a03468de9f2b4f8d747d, type: 2}
+    level: 7
+  - pokemonBase: {fileID: 11400000, guid: 55011786d1cb4624696384290268cf83, type: 2}
+    level: 3
+  - pokemonBase: {fileID: 11400000, guid: 0675028d7d69979489940b2e3e7e743e, type: 2}
+    level: 5
 --- !u!1 &28980620
 GameObject:
   m_ObjectHideFlags: 0
@@ -914,8 +934,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73b2725b4eb462f4f972e2f6496fa56b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pokemonBase: {fileID: 11400000, guid: cc12eac93b06a03468de9f2b4f8d747d, type: 2}
-  level: 5
   isPlayerUnit: 0
 --- !u!114 &332088172
 MonoBehaviour:
@@ -2221,7 +2239,7 @@ Transform:
   m_Children:
   - {fileID: 15673520}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &671468984
 GameObject:
@@ -2598,6 +2616,7 @@ GameObject:
   m_Component:
   - component: {fileID: 763018700}
   - component: {fileID: 763018702}
+  - component: {fileID: 763018703}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2619,7 +2638,7 @@ Transform:
   m_Children:
   - {fileID: 1488956692}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &763018702
 MonoBehaviour:
@@ -2642,6 +2661,23 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   moveSpeed: 5
+--- !u!114 &763018703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763018698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d477e776a7ae9b94bb0bf621a442fdf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pokemonList:
+  - pokemonBase: {fileID: 11400000, guid: 0675028d7d69979489940b2e3e7e743e, type: 2}
+    level: 7
+  - pokemonBase: {fileID: 11400000, guid: 55011786d1cb4624696384290268cf83, type: 2}
+    level: 3
 --- !u!1 &773597267
 GameObject:
   m_ObjectHideFlags: 0
@@ -2767,7 +2803,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &777682256
 MonoBehaviour:
@@ -3027,7 +3063,7 @@ Transform:
   - {fileID: 349339855}
   - {fileID: 1611869122}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &880643991
 MonoBehaviour:
@@ -13928,7 +13964,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1788365885
 MonoBehaviour:
@@ -13990,7 +14026,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1940585747
 MonoBehaviour:
@@ -14093,8 +14129,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73b2725b4eb462f4f972e2f6496fa56b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pokemonBase: {fileID: 11400000, guid: 0675028d7d69979489940b2e3e7e743e, type: 2}
-  level: 7
   isPlayerUnit: 1
 --- !u!1 &2037265479
 GameObject:
@@ -14842,7 +14876,7 @@ Transform:
   - {fileID: 519420032}
   - {fileID: 2094658870}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2094658868
 GameObject:

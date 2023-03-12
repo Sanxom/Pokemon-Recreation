@@ -24,6 +24,8 @@ public class BattleSystem : MonoBehaviour
 
     private WaitForSeconds attackRoutineDelay;
     private WaitForSeconds faintRoutineDelay;
+    private PokemonParty playerParty;
+    private Pokemon wildPokemon;
     private BattleState state;
     private float attackDelay = 0.5f;
     private float faintDelay = 2f;
@@ -36,8 +38,10 @@ public class BattleSystem : MonoBehaviour
         faintRoutineDelay = new WaitForSeconds(faintDelay);
     }
 
-    public void StartBattle()
+    public void StartBattle(PokemonParty playerParty, Pokemon wildPokemon)
     {
+        this.playerParty = playerParty;
+        this.wildPokemon = wildPokemon;
         StartCoroutine(SetupBattle());
     }
 
@@ -49,14 +53,17 @@ public class BattleSystem : MonoBehaviour
         }
         else if (state == BattleState.PlayerMove)
         {
+            if (currentMove > playerUnit.Pokemon.MoveList.Count - 1)
+                currentMove = 0;
+
             HandleMoveSelection();
         }
     }
 
     public IEnumerator SetupBattle()
     {
-        playerUnit.Setup();
-        enemyUnit.Setup();
+        playerUnit.Setup(playerParty.GetHealthyPokemon());
+        enemyUnit.Setup(wildPokemon);
         playerHUD.SetData(playerUnit.Pokemon);
         enemyHUD.SetData(enemyUnit.Pokemon);
 
@@ -118,7 +125,21 @@ public class BattleSystem : MonoBehaviour
             yield return dialogueBox.TypeDialogue($"{playerUnit.Pokemon.PokemonBase.PokemonName} fainted.");
             playerUnit.PlayFaintAnimation();
             yield return faintRoutineDelay;
-            OnBattleOver?.Invoke(false);
+
+            Pokemon nextPokemon = playerParty.GetHealthyPokemon();
+            if (nextPokemon != null)
+            {
+                playerUnit.Setup(nextPokemon);
+                playerHUD.SetData(nextPokemon);
+
+                dialogueBox.SetMoveNames(nextPokemon.MoveList);
+
+                yield return dialogueBox.TypeDialogue($"Go, {nextPokemon.PokemonBase.PokemonName}!");
+
+                PlayerAction();
+            }
+            else
+                OnBattleOver?.Invoke(false);
         }
         else
         {

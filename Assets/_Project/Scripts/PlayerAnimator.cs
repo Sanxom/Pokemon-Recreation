@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerAnimator : MonoBehaviour
 {
-    [SerializeField] private Player player;
+    [SerializeField] private PlayerController playerController;
 
     private const string MOVE_X = "moveX";
     private const string MOVE_Y = "moveY";
@@ -22,14 +22,19 @@ public class PlayerAnimator : MonoBehaviour
         AnimatePlayer();
     }
 
+    public void SetMovingStatus(bool isMoving)
+    {
+        animator.SetBool(IS_MOVING, isMoving);
+    }
+
     private void AnimatePlayer()
     {
-        if (player.GetPlayerInputVector() != Vector2.zero)
+        if (playerController.GetPlayerInputVector() != Vector2.zero)
         {
-            animator.SetFloat(MOVE_X, player.GetPlayerInputVector().x);
-            animator.SetFloat(MOVE_Y, player.GetPlayerInputVector().y);
+            animator.SetFloat(MOVE_X, playerController.GetPlayerInputVector().x);
+            animator.SetFloat(MOVE_Y, playerController.GetPlayerInputVector().y);
         }
 
-        animator.SetBool(IS_MOVING, player.IsMoving());
+        SetMovingStatus(playerController.IsMoving());
     }
 }

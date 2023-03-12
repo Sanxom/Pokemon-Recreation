@@ -43,17 +43,25 @@ public class Pokemon
             critical = 2f;
         }
 
+        // STAB bonus
+        float stab = 1f;
+        if (move.Base.Type == attacker.PokemonBase.Type1 || move.Base.Type == attacker.PokemonBase.Type2)
+            stab = 1.5f;
+
         float type = TypeChart.GetEffectiveness(move.Base.Type, PokemonBase.Type1) * TypeChart.GetEffectiveness(move.Base.Type, PokemonBase.Type2);
 
-        DamageDetails damageDetails = new DamageDetails()
+        DamageDetails damageDetails = new()
         {
             TypeEffectiveness = type,
             Critical = critical,
             Fainted = false
         };
 
+        float attack = move.Base.IsSpecial ? attacker.SpAttack : attacker.Attack;
+        float defense = move.Base.IsSpecial ? SpDefense : Defense;
+
         int damage;
-        float modifiers = Random.Range(0.85f, 1f) * type * critical;
+        float modifiers = Random.Range(0.85f, 1f) * type * critical * stab;
         float a = (2 * attacker.Level / 5 + 2);
         float d;
         // TODO: Change this to account for Physical and Special Attack/Defense
@@ -64,14 +72,14 @@ public class Pokemon
         }
         else if (move.Base.Category2 == Category.Status)
         {
-            d = (a * move.Base.Power * ((float)attacker.Attack / Defense)) / 50 + 2;
+            d = (a * move.Base.Power * ((float)attack / defense)) / 50 + 2;
             damage = Mathf.FloorToInt(d * modifiers);
             Health -= damage;
             // Apply status effect here?
         }
         else if (move.Base.Category1 != Category.Status && move.Base.Category2 != Category.Status)
         {
-            d = (a * move.Base.Power * ((float)attacker.Attack / Defense)) / 50 + 2;
+            d = (a * move.Base.Power * ((float)attack / defense)) / 50 + 2;
             damage = Mathf.FloorToInt(d * modifiers);
             Health -= damage;
         }

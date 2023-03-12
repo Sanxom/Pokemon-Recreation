@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,8 @@ public enum BattleState
 
 public class BattleSystem : MonoBehaviour
 {
+    public event Action<bool> OnBattleOver;
+
     [SerializeField] private BattleUnit playerUnit;
     [SerializeField] private BattleUnit enemyUnit;
     [SerializeField] private BattleHUD playerHUD;
@@ -20,18 +23,25 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private BattleDialogueBox dialogueBox;
 
     private WaitForSeconds attackRoutineDelay;
+    private WaitForSeconds faintRoutineDelay;
     private BattleState state;
     private float attackDelay = 0.5f;
+    private float faintDelay = 2f;
     private int currentAction;
     private int currentMove;
 
     private void Start()
     {
         attackRoutineDelay = new WaitForSeconds(attackDelay);
+        faintRoutineDelay = new WaitForSeconds(faintDelay);
+    }
+
+    public void StartBattle()
+    {
         StartCoroutine(SetupBattle());
     }
 
-    private void Update()
+    public void HandleUpdate()
     {
         if (state == BattleState.PlayerAction)
         {
@@ -62,6 +72,7 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.Busy;
 
         Move move = playerUnit.Pokemon.MoveList[currentMove];
+        move.PP--;
         yield return dialogueBox.TypeDialogue($"{playerUnit.Pokemon.PokemonBase.PokemonName} used {move.Base.MoveName}.");
 
         playerUnit.PlayAttackAnimation();
@@ -76,6 +87,9 @@ public class BattleSystem : MonoBehaviour
         {
             yield return dialogueBox.TypeDialogue($"{enemyUnit.Pokemon.PokemonBase.PokemonName} fainted.");
             enemyUnit.PlayFaintAnimation();
+
+            yield return faintRoutineDelay;
+            OnBattleOver?.Invoke(true);
         }
         else
         {
@@ -88,7 +102,7 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.EnemyMove;
 
         Move move = enemyUnit.Pokemon.GetRandomMove();
-
+        move.PP--;
         yield return dialogueBox.TypeDialogue($"{enemyUnit.Pokemon.PokemonBase.PokemonName} used {move.Base.MoveName}.");
 
         enemyUnit.PlayAttackAnimation();
@@ -103,6 +117,8 @@ public class BattleSystem : MonoBehaviour
         {
             yield return dialogueBox.TypeDialogue($"{playerUnit.Pokemon.PokemonBase.PokemonName} fainted.");
             playerUnit.PlayFaintAnimation();
+            yield return faintRoutineDelay;
+            OnBattleOver?.Invoke(false);
         }
         else
         {
@@ -125,7 +141,8 @@ public class BattleSystem : MonoBehaviour
     private void PlayerAction()
     {
         state = BattleState.PlayerAction;
-        StartCoroutine(dialogueBox.TypeDialogue("Choose an action."));
+        dialogueBox.SetDialogue("Choose an action.");
+        //StartCoroutine(dialogueBox.TypeDialogue("Choose an action."));
         dialogueBox.EnableActionSelector(true);
     }
 

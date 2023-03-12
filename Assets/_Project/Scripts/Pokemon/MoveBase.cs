@@ -35,4 +35,14 @@ public class MoveBase : ScriptableObject
     public int Accuracy => accuracy;
     public int StartingPP => startingPP;
     public int MaxPossiblePP => maxPossiblePP;
+    public bool IsSpecial
+    {
+        get
+        {
+            if (category1 == Category.Special)
+                return true;
+
+            return false;
+        }
+    }
 }

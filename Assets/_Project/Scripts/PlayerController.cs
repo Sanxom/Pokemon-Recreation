@@ -1,10 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
+    public event Action OnEncountered;
+
+    [SerializeField] private PlayerAnimator animator;
     [SerializeField] private GameInput gameInput;
     [SerializeField] private LayerMask solidObjectsLayer;
     [SerializeField] private LayerMask grassLayer;
@@ -14,7 +18,7 @@ public class Player : MonoBehaviour
     private float overlapRadius = 0.15f;
     private bool isMoving;
 
-    private void Update()
+    public void HandleUpdate()
     {
         if (isMoving)
             return;
@@ -73,9 +77,10 @@ public class Player : MonoBehaviour
     {
         if (Physics2D.OverlapCircle(transform.position, overlapRadius, grassLayer) != null)
         {
-            if (Random.Range(1, 101) <= 10)
+            if (UnityEngine.Random.Range(1, 101) <= 10)
             {
-                print("Encountered wild Pokemon");
+                animator.SetMovingStatus(false);
+                OnEncountered?.Invoke();
             }
         }
     }

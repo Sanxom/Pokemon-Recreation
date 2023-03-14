@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Category
+public enum MoveCategory
 {
     None,
     Physical,
@@ -10,12 +10,21 @@ public enum Category
     Status
 }
 
+public enum MoveTarget
+{
+    Foe,
+    Self
+}
+
 [CreateAssetMenu(fileName = "Move", menuName = "Pokemon/Create New Move")]
 public class MoveBase : ScriptableObject
 {
+    [SerializeField] MoveEffects effects;
+
     [SerializeField] private PokemonType type;
-    [SerializeField] private Category category1;
-    [SerializeField] private Category category2;
+    [SerializeField] private MoveCategory category1;
+    [SerializeField] private MoveCategory category2;
+    [SerializeField] private MoveTarget target;
 
     [SerializeField] private string moveName;
 
@@ -26,23 +35,30 @@ public class MoveBase : ScriptableObject
     [SerializeField] private int startingPP;
     [SerializeField] private int maxPossiblePP;
 
+    public MoveEffects Effects => effects;
     public PokemonType Type => type;
-    public Category Category1 => category1;
-    public Category Category2 => category2;
+    public MoveCategory Category1 => category1;
+    public MoveCategory Category2 => category2;
+    public MoveTarget Target => target;
     public string MoveName => moveName;
     public string Description => description;
     public int Power => power;
     public int Accuracy => accuracy;
     public int StartingPP => startingPP;
     public int MaxPossiblePP => maxPossiblePP;
-    public bool IsSpecial
-    {
-        get
-        {
-            if (category1 == Category.Special)
-                return true;
+}
 
-            return false;
-        }
-    }
+[System.Serializable]
+public class MoveEffects
+{
+    [SerializeField] private List<StatBoost> boostList;
+
+    public List<StatBoost> BoostList => boostList;
+}
+
+[System.Serializable]
+public class StatBoost
+{
+    public Stat stat;
+    public int boost;
 }

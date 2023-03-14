@@ -25,6 +25,16 @@ public enum PokemonType
     Fairy
 }
 
+public enum Stat
+{
+    MaxHealth,
+    Attack,
+    Defense,
+    SpAttack,
+    SpDefense,
+    Speed
+}
+
 public class TypeChart
 {
     static float[][] chart =

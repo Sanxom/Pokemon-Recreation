@@ -12,9 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9c8085be0d9f3845b0fa4ccc697e810, type: 3}
   m_Name: Growl
   m_EditorClassIdentifier: 
+  effects:
+    boostList:
+    - stat: 1
+      boost: -1
   type: 1
   category1: 3
   category2: 0
+  target: 0
   moveName: Growl
   description: The user growls in a cute way. The target's Attack stat is lowered.
   power: 0

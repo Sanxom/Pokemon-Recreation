@@ -8,21 +8,26 @@ public class Pokemon
     [SerializeField] private PokemonBase pokemonBase;
     [SerializeField] private int level;
 
+    private const int minimumBoostAmount = -6;
+    private const int maximumBoostAmount = 6;
+
     // Properties
+    public Dictionary<Stat, int> StatDictionary { get; private set; }
+    public Dictionary<Stat, int> StatBoostDictionary { get; private set; }
+    public Queue<string> StatusChangeQueue { get; private set; } = new Queue<string>();
     public List<Move> MoveList { get; set; }
     public PokemonBase PokemonBase => pokemonBase;
     public int Level => level;
     public int Health { get; set; }
-    public int MaxHealth => Mathf.FloorToInt((PokemonBase.MaxHealth * Level) / 100f) + 10;
-    public int Attack => Mathf.FloorToInt((PokemonBase.Attack * Level) / 100f) + 5;
-    public int Defense => Mathf.FloorToInt((PokemonBase.Defense * Level) / 100f) + 5;
-    public int SpAttack => Mathf.FloorToInt((PokemonBase.SpAttack * Level) / 100f) + 5;
-    public int SpDefense => Mathf.FloorToInt((PokemonBase.SpDefense * Level) / 100f) + 5;
-    public int Speed => Mathf.FloorToInt((PokemonBase.Speed * Level) / 100f) + 5;
+    public int MaxHealth => GetStatWithBoost(Stat.MaxHealth);
+    public int Attack => GetStatWithBoost(Stat.Attack);
+    public int Defense => GetStatWithBoost(Stat.Defense);
+    public int SpAttack => GetStatWithBoost(Stat.SpAttack);
+    public int SpDefense => GetStatWithBoost(Stat.SpDefense);
+    public int Speed => GetStatWithBoost(Stat.Speed);
 
     public void Init()
     {
-        Health = MaxHealth;
         MoveList = new List<Move>();
 
         // Generate moves
@@ -34,6 +39,12 @@ public class Pokemon
             if (MoveList.Count >= 4)
                 break;
         }
+
+        CalculateStats();
+
+        ResetStatBoosts();
+
+        Health = MaxHealth;
     }
 
     public DamageDetails TakeDamage(Move move, Pokemon attacker)
@@ -59,33 +70,19 @@ public class Pokemon
             Fainted = false
         };
 
-        float attack = move.Base.IsSpecial ? attacker.SpAttack : attacker.Attack;
-        float defense = move.Base.IsSpecial ? SpDefense : Defense;
+        float attack = move.Base.Category1 == MoveCategory.Special ? attacker.SpAttack : attacker.Attack;
+        float defense = move.Base.Category1 == MoveCategory.Special ? SpDefense : Defense;
 
         int damage;
         float modifiers = Random.Range(0.85f, 1f) * type * critical * stab;
         float a = (2 * attacker.Level / 5 + 2);
         float d;
-        // TODO: Refactor to remove these if/elses?
-        if (move.Base.Category1 == Category.Status)
-        {
-            // Apply status effect here?
-        }
-        else if (move.Base.Category2 == Category.Status)
-        {
-            d = (a * move.Base.Power * ((float)attack / defense)) / 50 + 2;
-            damage = Mathf.FloorToInt(d * modifiers);
-            Health -= damage;
-            // Apply status effect here?
-        }
-        else if (move.Base.Category1 != Category.Status && move.Base.Category2 != Category.Status)
-        {
-            d = (a * move.Base.Power * ((float)attack / defense)) / 50 + 2;
-            damage = Mathf.FloorToInt(d * modifiers);
-            Health -= damage;
-        }
 
-        if(Health <= 0)
+        d = (a * move.Base.Power * ((float)attack / defense)) / 50 + 2;
+        damage = Mathf.FloorToInt(d * modifiers);
+        Health -= damage;
+
+        if (Health <= 0)
         {
             Health = 0;
             damageDetails.Fainted = true;
@@ -98,6 +95,79 @@ public class Pokemon
     {
         int randomMove = Random.Range(0, MoveList.Count);
         return MoveList[randomMove];
+    }
+
+    public void ApplyBoosts(List<StatBoost> statBoostList, BattleUnit battleUnit)
+    {
+        foreach (StatBoost statBoost in statBoostList)
+        {
+            Stat stat = statBoost.stat;
+            int boost = statBoost.boost;
+
+            StatBoostDictionary[stat] = Mathf.Clamp(StatBoostDictionary[stat] + boost, minimumBoostAmount, maximumBoostAmount);
+
+            if (battleUnit.IsPlayerUnit)
+            {
+                if (boost > 0)
+                    StatusChangeQueue.Enqueue($"{pokemonBase.PokemonName}'s {stat} rose!");
+                else
+                    StatusChangeQueue.Enqueue($"{PokemonBase.PokemonName}'s {stat} fell!");
+            }
+            else
+            {
+                if (boost > 0)
+                    StatusChangeQueue.Enqueue($"The enemy {pokemonBase.PokemonName}'s {stat} rose!");
+                else
+                    StatusChangeQueue.Enqueue($"The enemy {pokemonBase.PokemonName}'s {stat} fell!");
+            }
+        }
+    }
+
+    public void OnBattleOver()
+    {
+        ResetStatBoosts();
+    }
+
+    private int GetStatWithBoost(Stat stat)
+    {
+        int statValue = StatDictionary[stat];
+
+        // Apply stat boost
+        float[] boostValues = new float[] { 1f, 1.5f, 2f, 2.5f, 3f, 3.5f, 4f };
+        int boost = StatBoostDictionary[stat];
+
+        if (boost >= 0)
+            statValue = Mathf.FloorToInt(statValue * boostValues[boost]);
+        else
+            statValue = Mathf.FloorToInt(statValue / boostValues[-boost]);
+
+        return statValue;
+    }
+
+    private void CalculateStats()
+    {
+        StatDictionary = new Dictionary<Stat, int>
+        {
+            { Stat.MaxHealth, Mathf.FloorToInt(PokemonBase.MaxHealth * Level / 100f) + 10 },
+            { Stat.Attack, Mathf.FloorToInt(PokemonBase.Attack * Level / 100f) + 5 },
+            { Stat.Defense, Mathf.FloorToInt(PokemonBase.Defense * Level / 100f) + 5 },
+            { Stat.SpAttack, Mathf.FloorToInt(PokemonBase.SpAttack * Level / 100f) + 5 },
+            { Stat.SpDefense, Mathf.FloorToInt(PokemonBase.SpDefense * Level / 100f) + 5 },
+            { Stat.Speed, Mathf.FloorToInt(PokemonBase.Speed * Level / 100f) + 5 }
+        };
+    }
+
+    private void ResetStatBoosts()
+    {
+        StatBoostDictionary = new Dictionary<Stat, int>()
+        {
+            { Stat.MaxHealth, 0 },
+            { Stat.Attack, 0 },
+            { Stat.Defense, 0 },
+            { Stat.SpAttack, 0 },
+            { Stat.SpDefense, 0 },
+            { Stat.Speed, 0 }
+        };
     }
 }
 

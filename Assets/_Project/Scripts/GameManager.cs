@@ -5,7 +5,8 @@ using UnityEngine;
 public enum GameState
 {
     FreeRoam,
-    Battle
+    Battle,
+    Dialogue
 }
 
 public class GameManager : MonoBehaviour
@@ -25,12 +26,16 @@ public class GameManager : MonoBehaviour
     {
         playerController.OnEncountered += StartBattle;
         battleSystem.OnBattleOver += EndBattle;
+        DialogueManager.Instance.OnShowDialogue += OnShowDialogue;
+        DialogueManager.Instance.OnCloseDialogue += OnCloseDialogue;
     }
 
     private void OnDestroy()
     {
         playerController.OnEncountered -= StartBattle;
         battleSystem.OnBattleOver -= EndBattle;
+        DialogueManager.Instance.OnShowDialogue -= OnShowDialogue;
+        DialogueManager.Instance.OnCloseDialogue -= OnCloseDialogue;
     }
 
     private void Update()
@@ -42,6 +47,10 @@ public class GameManager : MonoBehaviour
         else if (state == GameState.Battle)
         {
             battleSystem.HandleUpdate();
+        }
+        else if (state == GameState.Dialogue)
+        {
+            DialogueManager.Instance.HandleUpdate();
         }
     }
 
@@ -62,5 +71,16 @@ public class GameManager : MonoBehaviour
         state = GameState.FreeRoam;
         battleSystem.gameObject.SetActive(false);
         freeRoamCamera.gameObject.SetActive(true);
+    }
+
+    private void OnShowDialogue()
+    {
+        state = GameState.Dialogue;
+    }
+
+    private void OnCloseDialogue()
+    {
+        if (state == GameState.Dialogue)
+            state = GameState.FreeRoam;
     }
 }

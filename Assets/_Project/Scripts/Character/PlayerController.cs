@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameInput gameInput;
     [SerializeField] private LayerMask solidObjectsLayer;
     [SerializeField] private LayerMask grassLayer;
+    [SerializeField] private LayerMask interactableLayer;
     [SerializeField] private float moveSpeed;
 
     private Vector2 inputVector;
@@ -33,6 +34,11 @@ public class PlayerController : MonoBehaviour
 
             if(IsWalkable(targetPos))
                 StartCoroutine(Move(targetPos));
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Interact();
         }
     }
 
@@ -65,7 +71,7 @@ public class PlayerController : MonoBehaviour
 
     private bool IsWalkable(Vector3 targetPos)
     {
-        if (Physics2D.OverlapCircle(targetPos, overlapRadius, solidObjectsLayer) != null)
+        if (Physics2D.OverlapCircle(targetPos, overlapRadius, solidObjectsLayer | interactableLayer) != null)
         {
             return false;
         }
@@ -82,6 +88,21 @@ public class PlayerController : MonoBehaviour
                 animator.SetMovingStatus(false);
                 OnEncountered?.Invoke();
             }
+        }
+    }
+
+    private void Interact()
+    {
+        Animator anim = animator.GetComponent<Animator>();
+        Vector3 facingDirection = new(anim.GetFloat(animator.MoveX), anim.GetFloat(animator.MoveY));
+        Vector3 interactPosition = transform.position + facingDirection;
+
+        // Debug.DrawLine(transform.position, interactPosition, Color.white, 0.5f);
+
+        Collider2D collider = Physics2D.OverlapCircle(interactPosition, overlapRadius, interactableLayer);
+        if (collider != null)
+        {
+            collider.GetComponent<IInteractable>()?.Interact();
         }
     }
 }

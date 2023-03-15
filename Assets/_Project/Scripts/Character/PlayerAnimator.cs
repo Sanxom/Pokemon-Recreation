@@ -6,11 +6,15 @@ public class PlayerAnimator : MonoBehaviour
 {
     [SerializeField] private PlayerController playerController;
 
-    private const string MOVE_X = "moveX";
-    private const string MOVE_Y = "moveY";
+    private string moveX = "moveX";
+    private string moveY = "moveY";
     private const string IS_MOVING = "isMoving";
 
     private Animator animator;
+
+    public Animator Animator => animator;
+    public string MoveX => moveX;
+    public string MoveY => moveY;
 
     private void Awake()
     {
@@ -31,8 +35,8 @@ public class PlayerAnimator : MonoBehaviour
     {
         if (playerController.GetPlayerInputVector() != Vector2.zero)
         {
-            animator.SetFloat(MOVE_X, playerController.GetPlayerInputVector().x);
-            animator.SetFloat(MOVE_Y, playerController.GetPlayerInputVector().y);
+            animator.SetFloat(moveX, playerController.GetPlayerInputVector().x);
+            animator.SetFloat(moveY, playerController.GetPlayerInputVector().y);
         }
 
         SetMovingStatus(playerController.IsMoving());

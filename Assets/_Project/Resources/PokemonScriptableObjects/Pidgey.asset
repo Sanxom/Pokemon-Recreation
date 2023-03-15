@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e95a5530dcc221c45b62c037d0b76dc8, type: 3}
+  m_Name: Pidgey
+  m_EditorClassIdentifier: 
+  frontSprite: {fileID: 21300000, guid: eef92a87f6f3b704db35b398990e0696, type: 3}
+  backSprite: {fileID: 21300000, guid: e835e6e984d64b746a7efe730bfb70b5, type: 3}
+  pokemonName: Pidgey
+  description: Common in grassy areas and forests, it is very docile and will chase
+    off enemies by flapping up sand.
+  type1: 1
+  type2: 10
+  maxHealth: 40
+  attack: 45
+  defense: 40
+  spAttack: 35
+  spDefense: 35
+  speed: 56
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: dfe4c841396cd3d498f8cf25860b9813, type: 2}
+    levelLearned: 1
+  - moveBase: {fileID: 11400000, guid: e8f7204b9fce29147a697f158c0f8b51, type: 2}
+    levelLearned: 5
+  - moveBase: {fileID: 11400000, guid: f3c199a0ac3ed2248ba5a43baf0b50f4, type: 2}
+    levelLearned: 9

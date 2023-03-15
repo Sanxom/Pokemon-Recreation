@@ -112,31 +112,48 @@ public class BattleSystem : MonoBehaviour
         else
             yield return dialogueBox.TypeDialogue($"The enemy {sourceUnit.Pokemon.PokemonBase.PokemonName} used {move.Base.MoveName}.");
 
-        sourceUnit.PlayAttackAnimation();
-        yield return attackRoutineDelay;
-        targetUnit.PlayHitAnimation();
-
-        if (move.Base.Category1 != MoveCategory.Status)
+        if (CheckIfMoveHits(move, sourceUnit.Pokemon, targetUnit.Pokemon))
         {
-            // Not a Status Move, Apply Damage
-            DamageDetails targetDamageDetails = targetUnit.Pokemon.TakeDamage(move, sourceUnit.Pokemon);
-            yield return targetUnit.UnitHUD.UpdateHealth();
-            yield return ShowDamageDetails(targetDamageDetails);
+            sourceUnit.PlayAttackAnimation();
+            yield return attackRoutineDelay;
+            targetUnit.PlayHitAnimation();
+
+            if (move.Base.Category == MoveCategory.Status)
+            {
+                // Is a Status Move, Apply Effect
+                yield return RunMoveEffects(move.Base.Effects, sourceUnit, targetUnit, move.Base.Target);
+            }
+            else
+            {
+                // Not a Status Move, Apply Damage
+                DamageDetails targetDamageDetails = targetUnit.Pokemon.TakeDamage(move, sourceUnit.Pokemon);
+                yield return targetUnit.UnitHUD.UpdateHealth();
+                yield return ShowDamageDetails(targetDamageDetails);
+            }
+
+            if (move.Base.SecondaryEffectsList != null && move.Base.SecondaryEffectsList.Count > 0 && targetUnit.Pokemon.Health > 0)
+            {
+                foreach (SecondaryEffects secondaryEffects in move.Base.SecondaryEffectsList)
+                {
+                    int rnd = UnityEngine.Random.Range(1, 101);
+                    if (rnd <= secondaryEffects.Chance)
+                        yield return RunMoveEffects(secondaryEffects, sourceUnit, targetUnit, secondaryEffects.Target);
+                }
+            }
+
+            if (targetUnit.Pokemon.Health <= 0)
+            {
+                // Target Fainted
+                yield return dialogueBox.TypeDialogue($"{targetUnit.Pokemon.PokemonBase.PokemonName} fainted.");
+                targetUnit.PlayFaintAnimation();
+                yield return faintRoutineDelay;
+
+                CheckForBattleOver(targetUnit);
+            }
         }
-        
-        if (move.Base.Category1 == MoveCategory.Status || move.Base.Category2 == MoveCategory.Status)
+        else
         {
-            // Is a Status Move, Apply Effect
-            yield return RunMoveEffects(move, sourceUnit, targetUnit);
-        }
-
-        if (targetUnit.Pokemon.Health <= 0)
-        {
-            yield return dialogueBox.TypeDialogue($"{targetUnit.Pokemon.PokemonBase.PokemonName} fainted.");
-            targetUnit.PlayFaintAnimation();
-            yield return faintRoutineDelay;
-
-            CheckForBattleOver(targetUnit);
+            yield return dialogueBox.TypeDialogue($"{sourceUnit.Pokemon.PokemonBase.PokemonName}'s attack missed!");
         }
 
         // Status like burn or poison will hurt the Pokemon after their turn
@@ -153,16 +170,15 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    private IEnumerator RunMoveEffects(Move move, BattleUnit sourceUnit, BattleUnit targetUnit)
+    private IEnumerator RunMoveEffects(MoveEffects effects, BattleUnit sourceUnit, BattleUnit targetUnit, MoveTarget moveTarget)
     {
-        MoveEffects effects = move.Base.Effects;
         Pokemon source = sourceUnit.Pokemon;
         Pokemon target = targetUnit.Pokemon;
 
         // Stat Changing
         if (effects.BoostList != null)
         {
-            if (move.Base.Target == MoveTarget.Self)
+            if (moveTarget == MoveTarget.Self)
                 source.ApplyBoosts(effects.BoostList, sourceUnit);
             else
                 target.ApplyBoosts(effects.BoostList, targetUnit);
@@ -285,6 +301,32 @@ public class BattleSystem : MonoBehaviour
         // If the state was not changed by RunMove, then we go to the next step
         if (state == BattleState.PerformMove)
             ActionSelection();
+    }
+
+    private bool CheckIfMoveHits(Move move, Pokemon sourcePokemon, Pokemon targetPokemon)
+    {
+        if (move.Base.AlwaysHits)
+            return true;
+
+        float moveAccuracy = move.Base.Accuracy;
+        int accuracy = sourcePokemon.StatBoostDictionary[Stat.Accuracy];
+        int evasion = targetPokemon.StatBoostDictionary[Stat.Evasion];
+
+        float[] boostValues = new float[] { 1f, 4f / 3f, 5f / 3f, 2f, 7f / 3f, 8f / 3f, 3f };
+
+        // Accuracy
+        if (accuracy > 0)
+            moveAccuracy *= boostValues[accuracy];
+        else
+            moveAccuracy /= boostValues[-accuracy];
+
+        // Evasion
+        if (evasion > 0)
+            moveAccuracy /= boostValues[evasion];
+        else
+            moveAccuracy *= boostValues[-evasion];
+
+        return UnityEngine.Random.Range(1, 101) <= moveAccuracy;
     }
 
     private void CheckForBattleOver(BattleUnit faintedUnit)

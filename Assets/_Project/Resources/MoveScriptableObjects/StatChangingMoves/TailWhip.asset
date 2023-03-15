@@ -17,9 +17,9 @@ MonoBehaviour:
     - stat: 2
       boost: -1
     status: 0
+    volatileStatus: 0
   type: 1
-  category1: 3
-  category2: 0
+  category: 3
   target: 0
   moveName: Tail Whip
   description: The user wags its tail cutely, making the foe less wary. The target's
@@ -28,3 +28,4 @@ MonoBehaviour:
   accuracy: 100
   startingPP: 30
   maxPossiblePP: 48
+  alwaysHits: 0

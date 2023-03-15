@@ -15,9 +15,9 @@ MonoBehaviour:
   effects:
     boostList: []
     status: 5
+    volatileStatus: 0
   type: 4
-  category1: 3
-  category2: 0
+  category: 3
   target: 0
   moveName: Thunder Wave
   description: A weak electric charge is launched at the foe. It causes paralysis
@@ -26,3 +26,4 @@ MonoBehaviour:
   accuracy: 100
   startingPP: 20
   maxPossiblePP: 32
+  alwaysHits: 0

@@ -15,13 +15,14 @@ MonoBehaviour:
   effects:
     boostList: []
     status: 4
+    volatileStatus: 0
   type: 5
-  category1: 3
-  category2: 0
+  category: 3
   target: 0
   moveName: Sleep Powder
   description: The user scatters a big cloud of sleep-inducing dust around the foe.
   power: 0
-  accuracy: 100
+  accuracy: 75
   startingPP: 15
   maxPossiblePP: 24
+  alwaysHits: 0

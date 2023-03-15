@@ -16,9 +16,10 @@ MonoBehaviour:
     boostList:
     - stat: 1
       boost: -1
+    status: 0
+    volatileStatus: 0
   type: 1
-  category1: 3
-  category2: 0
+  category: 3
   target: 0
   moveName: Growl
   description: The user growls in a cute way. The target's Attack stat is lowered.
@@ -26,3 +27,4 @@ MonoBehaviour:
   accuracy: 100
   startingPP: 40
   maxPossiblePP: 64
+  alwaysHits: 0

@@ -15,14 +15,15 @@ MonoBehaviour:
   effects:
     boostList: []
     status: 2
+    volatileStatus: 0
   type: 8
-  category1: 3
-  category2: 0
+  category: 3
   target: 0
   moveName: Toxic
   description: A move that leaves the target badly poisoned. Its poison damage worsens
     every turn.
   power: 0
-  accuracy: 100
+  accuracy: 85
   startingPP: 10
   maxPossiblePP: 16
+  alwaysHits: 0

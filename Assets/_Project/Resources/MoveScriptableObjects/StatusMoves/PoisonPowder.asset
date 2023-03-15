@@ -15,13 +15,14 @@ MonoBehaviour:
   effects:
     boostList: []
     status: 1
+    volatileStatus: 0
   type: 8
-  category1: 3
-  category2: 0
+  category: 3
   target: 0
   moveName: Poison Powder
   description: A cloud of toxic dust is scattered. It may poison the foe.
   power: 0
-  accuracy: 100
+  accuracy: 75
   startingPP: 35
   maxPossiblePP: 56
+  alwaysHits: 0

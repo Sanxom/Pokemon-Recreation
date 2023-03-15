@@ -81,8 +81,8 @@ public class Pokemon
             Fainted = false
         };
 
-        float attack = move.Base.Category1 == MoveCategory.Special ? attacker.SpAttack : attacker.Attack;
-        float defense = move.Base.Category1 == MoveCategory.Special ? SpDefense : Defense;
+        float attack = move.Base.Category == MoveCategory.Special ? attacker.SpAttack : attacker.Attack;
+        float defense = move.Base.Category == MoveCategory.Special ? SpDefense : Defense;
 
         int damage;
         float modifiers = Random.Range(0.85f, 1f) * type * critical * stab;
@@ -235,7 +235,9 @@ public class Pokemon
             { Stat.Defense, 0 },
             { Stat.SpAttack, 0 },
             { Stat.SpDefense, 0 },
-            { Stat.Speed, 0 }
+            { Stat.Speed, 0 },
+            { Stat.Accuracy, 0 },
+            { Stat.Evasion, 0 }
         };
     }
 }

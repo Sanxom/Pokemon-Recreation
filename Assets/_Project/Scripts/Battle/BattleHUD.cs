@@ -38,12 +38,12 @@ public class BattleHUD : MonoBehaviour
 
         statusColorsDictionary = new Dictionary<ConditionID, Color>()
         {
-            {ConditionID.PSN, poisonColor},
-            {ConditionID.PSN2, poisonColor },
-            {ConditionID.BRN, burnColor},
-            {ConditionID.SLP, sleepColor},
-            {ConditionID.PAR, paralyzeColor },
-            {ConditionID.FRZ, freezeColor}
+            { ConditionID.PSN, poisonColor },
+            { ConditionID.PSN2, poisonColor },
+            { ConditionID.BRN, burnColor },
+            { ConditionID.SLP, sleepColor },
+            { ConditionID.PAR, paralyzeColor },
+            { ConditionID.FRZ, freezeColor }
         };
 
         SetStatusText();

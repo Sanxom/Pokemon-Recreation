@@ -17,8 +17,7 @@ MonoBehaviour:
     status: 0
     volatileStatus: 7
   type: 14
-  category1: 3
-  category2: 0
+  category: 3
   target: 0
   moveName: Confuse Ray
   description: The foe is exposed to a sinister ray that triggers confusion.
@@ -26,3 +25,4 @@ MonoBehaviour:
   accuracy: 100
   startingPP: 10
   maxPossiblePP: 16
+  alwaysHits: 0

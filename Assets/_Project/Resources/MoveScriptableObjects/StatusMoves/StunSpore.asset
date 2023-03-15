@@ -15,14 +15,15 @@ MonoBehaviour:
   effects:
     boostList: []
     status: 5
+    volatileStatus: 0
   type: 5
-  category1: 3
-  category2: 0
+  category: 3
   target: 0
   moveName: Stun Spore
   description: The user scatters a cloud of paralyzing powder. It may paralyze the
     target.
   power: 0
-  accuracy: 100
+  accuracy: 75
   startingPP: 30
   maxPossiblePP: 48
+  alwaysHits: 0

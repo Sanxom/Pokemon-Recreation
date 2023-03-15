@@ -12,14 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9c8085be0d9f3845b0fa4ccc697e810, type: 3}
   m_Name: Bubble
   m_EditorClassIdentifier: 
-  effects:
-    boostList:
+  secondaryEffectsList:
+  - boostList:
     - stat: 5
       boost: -1
     status: 0
+    volatileStatus: 0
+    target: 0
+    chance: 10
+  effects:
+    boostList: []
+    status: 0
+    volatileStatus: 0
   type: 3
-  category1: 2
-  category2: 3
+  category: 2
   target: 0
   moveName: Bubble
   description: A spray of bubbles hits the target. It may lower the foe's Speed stat.
@@ -27,3 +33,4 @@ MonoBehaviour:
   accuracy: 100
   startingPP: 30
   maxPossiblePP: 48
+  alwaysHits: 0

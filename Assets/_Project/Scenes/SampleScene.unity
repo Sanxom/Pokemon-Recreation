@@ -185,12 +185,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wildPokemonList:
-  - pokemonBase: {fileID: 11400000, guid: cc12eac93b06a03468de9f2b4f8d747d, type: 2}
-    level: 5
   - pokemonBase: {fileID: 11400000, guid: 55011786d1cb4624696384290268cf83, type: 2}
-    level: 5
-  - pokemonBase: {fileID: 11400000, guid: 0675028d7d69979489940b2e3e7e743e, type: 2}
-    level: 5
+    level: 7
 --- !u!1 &28501934
 GameObject:
   m_ObjectHideFlags: 0
@@ -2867,18 +2863,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pokemonList:
-  - pokemonBase: {fileID: 11400000, guid: 0d6608ab05c0820438f72da90c333a2f, type: 2}
-    level: 12
   - pokemonBase: {fileID: 11400000, guid: 0675028d7d69979489940b2e3e7e743e, type: 2}
     level: 7
+  - pokemonBase: {fileID: 11400000, guid: e0184a1b970f6bb4c9d5fb852af33af4, type: 2}
+    level: 10
+  - pokemonBase: {fileID: 11400000, guid: 0d6608ab05c0820438f72da90c333a2f, type: 2}
+    level: 12
   - pokemonBase: {fileID: 11400000, guid: 55011786d1cb4624696384290268cf83, type: 2}
     level: 7
   - pokemonBase: {fileID: 11400000, guid: 46fdcc19522d4a34db9f3df23ba60eb1, type: 2}
     level: 10
   - pokemonBase: {fileID: 11400000, guid: cc12eac93b06a03468de9f2b4f8d747d, type: 2}
     level: 7
-  - pokemonBase: {fileID: 11400000, guid: cc12eac93b06a03468de9f2b4f8d747d, type: 2}
-    level: 13
 --- !u!224 &773597268 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4083444181589334494, guid: ef1d8dd64d5d43c459e62c135bbf9e15, type: 3}

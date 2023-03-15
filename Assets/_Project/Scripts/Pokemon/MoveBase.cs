@@ -52,8 +52,10 @@ public class MoveBase : ScriptableObject
 public class MoveEffects
 {
     [SerializeField] private List<StatBoost> boostList;
+    [SerializeField] private ConditionID status;
 
     public List<StatBoost> BoostList => boostList;
+    public ConditionID Status => status;
 }
 
 [System.Serializable]

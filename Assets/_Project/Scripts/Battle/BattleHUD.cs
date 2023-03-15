@@ -22,6 +22,10 @@ public class BattleHUD : MonoBehaviour
 
     public IEnumerator UpdateHealth()
     {
-        yield return healthBar.SetHealthSmooth((float)pokemon.Health / pokemon.MaxHealth);
+        if (pokemon.HasHealthChanged)
+        {
+            yield return healthBar.SetHealthSmooth((float)pokemon.Health / pokemon.MaxHealth);
+            pokemon.HasHealthChanged = false;
+        }
     }
 }

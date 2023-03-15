@@ -17,6 +17,9 @@ public class Pokemon
     public Queue<string> StatusChangeQueue { get; private set; } = new Queue<string>();
     public List<Move> MoveList { get; set; }
     public PokemonBase PokemonBase => pokemonBase;
+    public Condition Status { get; private set; }
+    public int SuperPoisonIncrement { get; set; }
+    public int StatusTime { get; set; }
     public int Level => level;
     public int Health { get; set; }
     public int MaxHealth => GetStatWithBoost(Stat.MaxHealth);
@@ -25,6 +28,7 @@ public class Pokemon
     public int SpAttack => GetStatWithBoost(Stat.SpAttack);
     public int SpDefense => GetStatWithBoost(Stat.SpDefense);
     public int Speed => GetStatWithBoost(Stat.Speed);
+    public bool HasHealthChanged { get; set; }
 
     public void Init()
     {
@@ -45,6 +49,7 @@ public class Pokemon
         ResetStatBoosts();
 
         Health = MaxHealth;
+        SuperPoisonIncrement = 1;
     }
 
     public DamageDetails TakeDamage(Move move, Pokemon attacker)
@@ -80,13 +85,8 @@ public class Pokemon
 
         d = (a * move.Base.Power * ((float)attack / defense)) / 50 + 2;
         damage = Mathf.FloorToInt(d * modifiers);
-        Health -= damage;
 
-        if (Health <= 0)
-        {
-            Health = 0;
-            damageDetails.Fainted = true;
-        }
+        UpdateHealth(damage);
 
         return damageDetails;
     }
@@ -95,6 +95,16 @@ public class Pokemon
     {
         int randomMove = Random.Range(0, MoveList.Count);
         return MoveList[randomMove];
+    }
+
+    public bool OnBeforeMove()
+    {
+        if (Status?.OnBeforeMove != null)
+        {
+            return Status.OnBeforeMove(this);
+        }
+
+        return true;
     }
 
     public void ApplyBoosts(List<StatBoost> statBoostList, BattleUnit battleUnit)
@@ -123,9 +133,32 @@ public class Pokemon
         }
     }
 
+    public void SetStatus(ConditionID conditionID)
+    {
+        Status = ConditionsDatabase.ConditionsDictionary[conditionID];
+        Status?.OnStart?.Invoke(this);
+        StatusChangeQueue.Enqueue($"{pokemonBase.PokemonName} {Status.StartMessage}");
+    }
+
+    public void UpdateHealth(int damage)
+    {
+        Health = Mathf.Clamp(Health - damage, 0, MaxHealth);
+        HasHealthChanged = true;
+    }
+
+    public void OnAfterTurn()
+    {
+        Status?.OnAfterTurn?.Invoke(this);
+    }
+
     public void OnBattleOver()
     {
         ResetStatBoosts();
+    }
+
+    public void CureStatus()
+    {
+        Status = null;
     }
 
     private int GetStatWithBoost(Stat stat)

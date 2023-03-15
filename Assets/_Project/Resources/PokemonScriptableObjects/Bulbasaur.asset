@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e95a5530dcc221c45b62c037d0b76dc8, type: 3}
   m_Name: Bulbasaur
   m_EditorClassIdentifier: 
-  frontSprite: {fileID: 21300000, guid: 0f37bf3cf5680a64d863b5f155b2a597, type: 3}
+  frontSprite: {fileID: 21300000, guid: d46d991c9e4776c498c4532e514d1bb9, type: 3}
   backSprite: {fileID: 21300000, guid: aacaae602a38f884ab9e02e43de3736d, type: 3}
   pokemonName: Bulbasaur
   description: A strange seed was planted on its back at birth. The plant sprouts

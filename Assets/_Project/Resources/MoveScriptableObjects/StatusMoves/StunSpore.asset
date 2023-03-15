@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9c8085be0d9f3845b0fa4ccc697e810, type: 3}
+  m_Name: StunSpore
+  m_EditorClassIdentifier: 
+  effects:
+    boostList: []
+    status: 5
+  type: 5
+  category1: 3
+  category2: 0
+  target: 0
+  moveName: Stun Spore
+  description: The user scatters a cloud of paralyzing powder. It may paralyze the
+    target.
+  power: 0
+  accuracy: 100
+  startingPP: 30
+  maxPossiblePP: 48

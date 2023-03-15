@@ -82,6 +82,15 @@ public class BattleSystem : MonoBehaviour
 
     private IEnumerator RunMove(BattleUnit sourceUnit, BattleUnit targetUnit, Move move)
     {
+        bool canRunMove = sourceUnit.Pokemon.OnBeforeMove();
+        if (!canRunMove)
+        {
+            yield return ShowStatusChanges(sourceUnit.Pokemon);
+            yield break;
+        }
+
+        yield return ShowStatusChanges(sourceUnit.Pokemon);
+
         move.PP--;
 
         if (sourceUnit.IsPlayerUnit)
@@ -115,6 +124,19 @@ public class BattleSystem : MonoBehaviour
 
             CheckForBattleOver(targetUnit);
         }
+
+        // Status like burn or poison will hurt the Pokemon after their turn
+        sourceUnit.Pokemon.OnAfterTurn();
+        yield return ShowStatusChanges(sourceUnit.Pokemon);
+        yield return sourceUnit.UnitHUD.UpdateHealth();
+        if (sourceUnit.Pokemon.Health <= 0)
+        {
+            yield return dialogueBox.TypeDialogue($"{sourceUnit.Pokemon.PokemonBase.PokemonName} fainted.");
+            sourceUnit.PlayFaintAnimation();
+            yield return faintRoutineDelay;
+
+            CheckForBattleOver(sourceUnit);
+        }
     }
 
     private IEnumerator RunMoveEffects(Move move, BattleUnit sourceUnit, BattleUnit targetUnit)
@@ -123,12 +145,19 @@ public class BattleSystem : MonoBehaviour
         Pokemon source = sourceUnit.Pokemon;
         Pokemon target = targetUnit.Pokemon;
 
+        // Stat Changing
         if (effects.BoostList != null)
         {
             if (move.Base.Target == MoveTarget.Self)
                 source.ApplyBoosts(effects.BoostList, sourceUnit);
             else
                 target.ApplyBoosts(effects.BoostList, targetUnit);
+        }
+
+        // Status Condition
+        if (effects.Status != ConditionID.None)
+        {
+            target.SetStatus(effects.Status);
         }
 
         yield return ShowStatusChanges(source);

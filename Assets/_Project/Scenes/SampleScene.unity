@@ -3149,16 +3149,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pokemonList:
+  - pokemonBase: {fileID: 11400000, guid: 0d6608ab05c0820438f72da90c333a2f, type: 2}
+    level: 12
   - pokemonBase: {fileID: 11400000, guid: 0675028d7d69979489940b2e3e7e743e, type: 2}
     level: 7
   - pokemonBase: {fileID: 11400000, guid: 55011786d1cb4624696384290268cf83, type: 2}
-    level: 3
+    level: 7
+  - pokemonBase: {fileID: 11400000, guid: 46fdcc19522d4a34db9f3df23ba60eb1, type: 2}
+    level: 10
   - pokemonBase: {fileID: 11400000, guid: cc12eac93b06a03468de9f2b4f8d747d, type: 2}
-    level: 6
-  - pokemonBase: {fileID: 11400000, guid: cc12eac93b06a03468de9f2b4f8d747d, type: 2}
-    level: 2
-  - pokemonBase: {fileID: 11400000, guid: cc12eac93b06a03468de9f2b4f8d747d, type: 2}
-    level: 56
+    level: 7
   - pokemonBase: {fileID: 11400000, guid: cc12eac93b06a03468de9f2b4f8d747d, type: 2}
     level: 13
 --- !u!1 &773597267

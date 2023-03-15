@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e95a5530dcc221c45b62c037d0b76dc8, type: 3}
   m_Name: Charmander
   m_EditorClassIdentifier: 
-  frontSprite: {fileID: 21300000, guid: cd259d9d4f8ba2749a16d1cc64d46bec, type: 3}
+  frontSprite: {fileID: 21300000, guid: 94e413dcd5f42954ab7b671545f8d98d, type: 3}
   backSprite: {fileID: 21300000, guid: ed8e1d9976a1fd94d961840d8f6e7764, type: 3}
   pokemonName: Charmander
   description: Obviously prefers hot places. When it rains, steam is said to spout

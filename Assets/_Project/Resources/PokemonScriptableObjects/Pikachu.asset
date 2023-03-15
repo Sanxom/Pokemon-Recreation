@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e95a5530dcc221c45b62c037d0b76dc8, type: 3}
+  m_Name: Pikachu
+  m_EditorClassIdentifier: 
+  frontSprite: {fileID: 21300000, guid: 4031c099cbc01304d84ac8f159ddf877, type: 3}
+  backSprite: {fileID: 21300000, guid: b3638787b424b9a488636d4a08d7afc5, type: 3}
+  pokemonName: Pikachu
+  description: It lives in forests with others. It stores electricity in the pouches
+    on its cheeks.
+  type1: 4
+  type2: 0
+  maxHealth: 35
+  attack: 55
+  defense: 30
+  spAttack: 50
+  spDefense: 40
+  speed: 90
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: dfb49eef2c8b4cd46a0f313d73e3a4f9, type: 2}
+    levelLearned: 1
+  - moveBase: {fileID: 11400000, guid: 5c0670b4caa4c304c8b127f10c81b1ca, type: 2}
+    levelLearned: 1
+  - moveBase: {fileID: 11400000, guid: 18885f33ca9348c4690b87aa189cdaac, type: 2}
+    levelLearned: 5
+  - moveBase: {fileID: 11400000, guid: 8c2a3866ebcaab34a97fef5eac25885b, type: 2}
+    levelLearned: 10

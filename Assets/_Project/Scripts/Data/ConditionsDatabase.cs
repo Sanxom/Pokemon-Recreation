@@ -5,20 +5,33 @@ using UnityEngine;
 public enum ConditionID
 {
     None,
-    Poison,
-    SuperPoison,
-    Burn,
-    Sleep,
-    Paralyze,
-    Freeze
+    PSN,
+    PSN2,
+    BRN,
+    SLP,
+    PAR,
+    FRZ,
+    Confusion
 }
 
 public class ConditionsDatabase
 {
+    public static void Init()
+    {
+        foreach (KeyValuePair<ConditionID, Condition> kvp in ConditionsDictionary)
+        {
+            ConditionID conditionId = kvp.Key;
+            Condition condition = kvp.Value;
+
+            condition.Id = conditionId;
+        }
+    }
+
     public static Dictionary<ConditionID, Condition> ConditionsDictionary { get; set; } = new Dictionary<ConditionID, Condition>()
     {
+        // Status Conditions
         {
-            ConditionID.Poison,
+            ConditionID.PSN,
             new Condition()
             {
                 Name = "Poison",
@@ -32,7 +45,7 @@ public class ConditionsDatabase
         },
 
         {
-            ConditionID.SuperPoison,
+            ConditionID.PSN2,
             new Condition()
             {
                 Name = "Super Poison",
@@ -51,7 +64,7 @@ public class ConditionsDatabase
         },
 
         {
-            ConditionID.Burn,
+            ConditionID.BRN,
             new Condition()
             {
                 Name = "Burn",
@@ -65,7 +78,7 @@ public class ConditionsDatabase
         },
 
         {
-            ConditionID.Sleep,
+            ConditionID.SLP,
             new Condition()
             {
                 Name = "Sleep",
@@ -95,7 +108,7 @@ public class ConditionsDatabase
         },
 
         {
-            ConditionID.Paralyze,
+            ConditionID.PAR,
             new Condition()
             {
                 Name = "Paralyze",
@@ -114,7 +127,7 @@ public class ConditionsDatabase
         },
 
         {
-            ConditionID.Freeze,
+            ConditionID.FRZ,
             new Condition()
             {
                 Name = "Freeze",
@@ -132,5 +145,42 @@ public class ConditionsDatabase
                 }
             }
         },
+
+        // Volatile Status Conditions
+        {
+            ConditionID.Confusion,
+            new Condition()
+            {
+                Name = "Confusion",
+                StartMessage = "has been confused.",
+                OnStart= (Pokemon pokemon) =>
+                {
+                    // Confused for 1-4 turns
+                    pokemon.VolatileStatusTime = Random.Range(1, 5);
+                    Debug.Log($"{pokemon.PokemonBase.PokemonName} will be confused for {pokemon.VolatileStatusTime} turns.");
+                },
+
+                OnBeforeMove = (Pokemon pokemon) =>
+                {
+                    if (pokemon.VolatileStatusTime <= 0)
+                    {
+                        pokemon.CureVolatileStatus();
+                        pokemon.StatusChangeQueue.Enqueue($"{pokemon.PokemonBase.PokemonName} snapped out of confusion!");
+                        return true;
+                    }
+
+                    pokemon.VolatileStatusTime--;
+                    pokemon.StatusChangeQueue.Enqueue($"{pokemon.PokemonBase.PokemonName} is confused.");
+                    // 50% chance to do a move
+                    if (Random.Range(1, 3) == 1)
+                        return true;
+
+                    // Hurt by confusion
+                    pokemon.UpdateHealth(pokemon.MaxHealth / 8);
+                    pokemon.StatusChangeQueue.Enqueue($"{pokemon.PokemonBase.PokemonName} hurt itself in its confusion.");
+                    return false;
+                }
+            }
+        }
     };
 }

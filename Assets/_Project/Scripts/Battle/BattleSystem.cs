@@ -86,6 +86,20 @@ public class BattleSystem : MonoBehaviour
         if (!canRunMove)
         {
             yield return ShowStatusChanges(sourceUnit.Pokemon);
+            yield return sourceUnit.UnitHUD.UpdateHealth();
+
+            // TODO: This might need testing. Works for now
+            sourceUnit.Pokemon.OnAfterTurn();
+            yield return ShowStatusChanges(sourceUnit.Pokemon);
+            yield return sourceUnit.UnitHUD.UpdateHealth();
+            if (sourceUnit.Pokemon.Health <= 0)
+            {
+                yield return dialogueBox.TypeDialogue($"{sourceUnit.Pokemon.PokemonBase.PokemonName} fainted.");
+                sourceUnit.PlayFaintAnimation();
+                yield return faintRoutineDelay;
+
+                CheckForBattleOver(sourceUnit);
+            }
             yield break;
         }
 
@@ -160,6 +174,12 @@ public class BattleSystem : MonoBehaviour
             target.SetStatus(effects.Status);
         }
 
+        // Volatile Status Condition
+        if (effects.VolatileStatus != ConditionID.None)
+        {
+            target.SetVolatileStatus(effects.VolatileStatus);
+        }
+
         yield return ShowStatusChanges(source);
         yield return ShowStatusChanges(target);
     }
@@ -187,6 +207,7 @@ public class BattleSystem : MonoBehaviour
 
     private IEnumerator SwitchPokemon(Pokemon newPokemon)
     {
+        playerUnit.Pokemon.CureVolatileStatus();
         bool currentPokemonFainted = true;
 
         if (playerUnit.Pokemon.Health > 0)

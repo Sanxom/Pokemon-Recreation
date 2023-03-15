@@ -5,6 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public class Pokemon
 {
+    public event System.Action OnStatusChanged;
+
     [SerializeField] private PokemonBase pokemonBase;
     [SerializeField] private int level;
 
@@ -18,8 +20,10 @@ public class Pokemon
     public List<Move> MoveList { get; set; }
     public PokemonBase PokemonBase => pokemonBase;
     public Condition Status { get; private set; }
+    public Condition VolatileStatus { get; private set; }
     public int SuperPoisonIncrement { get; set; }
     public int StatusTime { get; set; }
+    public int VolatileStatusTime { get; set; }
     public int Level => level;
     public int Health { get; set; }
     public int MaxHealth => GetStatWithBoost(Stat.MaxHealth);
@@ -50,6 +54,8 @@ public class Pokemon
 
         Health = MaxHealth;
         SuperPoisonIncrement = 1;
+        Status = null;
+        VolatileStatus = null;
     }
 
     public DamageDetails TakeDamage(Move move, Pokemon attacker)
@@ -99,12 +105,20 @@ public class Pokemon
 
     public bool OnBeforeMove()
     {
+        bool canPerformMove = true;
         if (Status?.OnBeforeMove != null)
         {
-            return Status.OnBeforeMove(this);
+            if (!Status.OnBeforeMove(this))
+                canPerformMove = false;
         }
 
-        return true;
+        if (VolatileStatus?.OnBeforeMove != null)
+        {
+            if (!VolatileStatus.OnBeforeMove(this))
+                canPerformMove = false;
+        }
+
+        return canPerformMove;
     }
 
     public void ApplyBoosts(List<StatBoost> statBoostList, BattleUnit battleUnit)
@@ -135,9 +149,23 @@ public class Pokemon
 
     public void SetStatus(ConditionID conditionID)
     {
+        if (Status != null)
+            return;
+
         Status = ConditionsDatabase.ConditionsDictionary[conditionID];
         Status?.OnStart?.Invoke(this);
         StatusChangeQueue.Enqueue($"{pokemonBase.PokemonName} {Status.StartMessage}");
+        OnStatusChanged?.Invoke();
+    }
+
+    public void SetVolatileStatus(ConditionID conditionID)
+    {
+        if (VolatileStatus != null)
+            return;
+
+        VolatileStatus = ConditionsDatabase.ConditionsDictionary[conditionID];
+        VolatileStatus?.OnStart?.Invoke(this);
+        StatusChangeQueue.Enqueue($"{pokemonBase.PokemonName} {VolatileStatus.StartMessage}");
     }
 
     public void UpdateHealth(int damage)
@@ -149,16 +177,24 @@ public class Pokemon
     public void OnAfterTurn()
     {
         Status?.OnAfterTurn?.Invoke(this);
+        VolatileStatus?.OnAfterTurn?.Invoke(this);
     }
 
     public void OnBattleOver()
     {
+        VolatileStatus = null;
         ResetStatBoosts();
     }
 
     public void CureStatus()
     {
         Status = null;
+        OnStatusChanged?.Invoke();
+    }
+
+    public void CureVolatileStatus()
+    {
+        VolatileStatus = null;
     }
 
     private int GetStatWithBoost(Stat stat)
@@ -181,7 +217,7 @@ public class Pokemon
     {
         StatDictionary = new Dictionary<Stat, int>
         {
-            { Stat.MaxHealth, Mathf.FloorToInt(PokemonBase.MaxHealth * Level / 100f) + 10 },
+            { Stat.MaxHealth, Mathf.FloorToInt(PokemonBase.MaxHealth * Level / 100f) + 10 + Level},
             { Stat.Attack, Mathf.FloorToInt(PokemonBase.Attack * Level / 100f) + 5 },
             { Stat.Defense, Mathf.FloorToInt(PokemonBase.Defense * Level / 100f) + 5 },
             { Stat.SpAttack, Mathf.FloorToInt(PokemonBase.SpAttack * Level / 100f) + 5 },

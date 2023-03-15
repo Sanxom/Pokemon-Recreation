@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a9c8085be0d9f3845b0fa4ccc697e810, type: 3}
-  m_Name: Tackle
+  m_Name: QuickAttack
   m_EditorClassIdentifier: 
   secondaryEffectsList: []
   effects:
@@ -20,11 +20,11 @@ MonoBehaviour:
   type: 1
   category: 1
   target: 0
-  moveName: Tackle
-  description: A full-body charge attack.
+  moveName: Quick Attack
+  description: An extremely fast attack that is certain to strike first.
   power: 40
   accuracy: 100
-  startingPP: 1
-  maxPossiblePP: 56
-  priority: 0
+  startingPP: 30
+  maxPossiblePP: 48
+  priority: 1
   alwaysHits: 0

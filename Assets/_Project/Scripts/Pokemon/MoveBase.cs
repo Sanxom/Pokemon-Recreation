@@ -34,6 +34,7 @@ public class MoveBase : ScriptableObject
     [SerializeField] private int accuracy;
     [SerializeField] private int startingPP;
     [SerializeField] private int maxPossiblePP;
+    [SerializeField] private int priority;
     [SerializeField] private bool alwaysHits;
 
     public List<SecondaryEffects> SecondaryEffectsList => secondaryEffectsList;
@@ -47,6 +48,7 @@ public class MoveBase : ScriptableObject
     public int Accuracy => accuracy;
     public int StartingPP => startingPP;
     public int MaxPossiblePP => maxPossiblePP;
+    public int Priority => priority;
     public bool AlwaysHits => alwaysHits;
 }
 

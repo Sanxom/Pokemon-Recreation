@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [System.Serializable]
@@ -18,6 +19,7 @@ public class Pokemon
     public Dictionary<Stat, int> StatBoostDictionary { get; private set; }
     public Queue<string> StatusChangeQueue { get; private set; } = new Queue<string>();
     public List<Move> MoveList { get; set; }
+    public Move CurrentMove { get; set; }
     public PokemonBase PokemonBase => pokemonBase;
     public Condition Status { get; private set; }
     public Condition VolatileStatus { get; private set; }
@@ -97,10 +99,12 @@ public class Pokemon
         return damageDetails;
     }
 
-    public Move GetRandomMove()
+    public Move GetRandomMoveWithPP()
     {
-        int randomMove = Random.Range(0, MoveList.Count);
-        return MoveList[randomMove];
+        List<Move> movesWithPP = MoveList.Where(x => x.PP > 0).ToList();
+
+        int randomMove = Random.Range(0, movesWithPP.Count);
+        return movesWithPP[randomMove];
     }
 
     public bool OnBeforeMove()

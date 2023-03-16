@@ -21,6 +21,8 @@ public class DialogueManager : MonoBehaviour
     private int currentLine;
     private bool isTyping;
 
+    public bool IsShowing { get; private set; }
+
     private void Awake()
     {
         Instance = this;
@@ -37,6 +39,7 @@ public class DialogueManager : MonoBehaviour
 
         OnShowDialogue?.Invoke();
 
+        IsShowing = true;
         this.dialogue = dialogue;
         dialogueBox.SetActive(true);
         StartCoroutine(TypeDialogue(dialogue.LinesList[0]));
@@ -66,6 +69,7 @@ public class DialogueManager : MonoBehaviour
             else
             {
                 currentLine = 0;
+                IsShowing = false;
                 dialogueBox.SetActive(false);
                 OnCloseDialogue?.Invoke();
             }

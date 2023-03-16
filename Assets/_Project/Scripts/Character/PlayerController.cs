@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
 {
     public event Action OnEncountered;
 
-    [SerializeField] private PlayerAnimator animator;
+    [SerializeField] private CharacterAnimator animator;
     [SerializeField] private GameInput gameInput;
     [SerializeField] private LayerMask solidObjectsLayer;
     [SerializeField] private LayerMask grassLayer;
@@ -19,6 +19,11 @@ public class PlayerController : MonoBehaviour
     private float overlapRadius = 0.15f;
     private bool isMoving;
 
+    private void Awake()
+    {
+        animator = GetComponentInChildren<CharacterAnimator>();
+    }
+
     public void HandleUpdate()
     {
         if (isMoving)
@@ -28,6 +33,8 @@ public class PlayerController : MonoBehaviour
 
         if (inputVector != Vector2.zero)
         {
+            AnimatePlayer();
+
             var targetPos = transform.position;
             targetPos.x += inputVector.x;
             targetPos.y += inputVector.y;
@@ -35,6 +42,8 @@ public class PlayerController : MonoBehaviour
             if(IsWalkable(targetPos))
                 StartCoroutine(Move(targetPos));
         }
+
+        SetMovingStatus(isMoving);
 
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -64,11 +73,6 @@ public class PlayerController : MonoBehaviour
         return inputVector;
     }
 
-    public bool IsMoving()
-    {
-        return isMoving;
-    }
-
     private bool IsWalkable(Vector3 targetPos)
     {
         if (Physics2D.OverlapCircle(targetPos, overlapRadius, solidObjectsLayer | interactableLayer) != null)
@@ -85,7 +89,7 @@ public class PlayerController : MonoBehaviour
         {
             if (UnityEngine.Random.Range(1, 101) <= 10)
             {
-                animator.SetMovingStatus(false);
+                SetMovingStatus(false);
                 OnEncountered?.Invoke();
             }
         }
@@ -93,8 +97,7 @@ public class PlayerController : MonoBehaviour
 
     private void Interact()
     {
-        Animator anim = animator.GetComponent<Animator>();
-        Vector3 facingDirection = new(anim.GetFloat(animator.MoveX), anim.GetFloat(animator.MoveY));
+        Vector3 facingDirection = new(animator.MoveX, animator.MoveY);
         Vector3 interactPosition = transform.position + facingDirection;
 
         // Debug.DrawLine(transform.position, interactPosition, Color.white, 0.5f);
@@ -103,6 +106,20 @@ public class PlayerController : MonoBehaviour
         if (collider != null)
         {
             collider.GetComponent<IInteractable>()?.Interact();
+        }
+    }
+
+    public void SetMovingStatus(bool isMoving)
+    {
+        animator.IsMoving = isMoving;
+    }
+
+    private void AnimatePlayer()
+    {
+        if (GetPlayerInputVector() != Vector2.zero)
+        {
+            animator.MoveX = GetPlayerInputVector().x;
+            animator.MoveY = GetPlayerInputVector().y;
         }
     }
 }

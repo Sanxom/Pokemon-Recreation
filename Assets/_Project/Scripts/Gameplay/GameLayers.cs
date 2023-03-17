@@ -9,10 +9,12 @@ public class GameLayers : MonoBehaviour
     [SerializeField] private LayerMask solidObjectsLayer;
     [SerializeField] private LayerMask grassLayer;
     [SerializeField] private LayerMask interactableLayer;
+    [SerializeField] private LayerMask playerLayer;
 
     public LayerMask SolidObjectsLayer => solidObjectsLayer;
     public LayerMask GrassLayer => grassLayer;
     public LayerMask InteractableLayer => interactableLayer;
+    public LayerMask PlayerLayer => playerLayer;
 
     private void Awake()
     {

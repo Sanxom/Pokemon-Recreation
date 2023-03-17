@@ -5,7 +5,8 @@ using UnityEngine;
 public enum NPCState
 {
     Idle,
-    Walking
+    Walking,
+    Dialogue
 }
 
 public class NPCController : MonoBehaviour, IInteractable
@@ -26,9 +27,6 @@ public class NPCController : MonoBehaviour, IInteractable
 
     private void Update()
     {
-        if (DialogueManager.Instance.IsShowing)
-            return;
-
         if (currentState == NPCState.Idle)
         {
             idleTimer += Time.deltaTime;
@@ -43,18 +41,31 @@ public class NPCController : MonoBehaviour, IInteractable
         character.HandleUpdate();
     }
 
-    public void Interact()
+    public void Interact(Transform initiator)
     {
         if (currentState == NPCState.Idle)
-            StartCoroutine(DialogueManager.Instance.ShowDialogue(dialogue));
+        {
+            currentState = NPCState.Dialogue;
+            character.LookTowards(initiator.position);
+
+            StartCoroutine(DialogueManager.Instance.ShowDialogue(dialogue, () =>
+            {
+                idleTimer = 0f;
+                currentState = NPCState.Idle;
+            }));
+        }
     }
 
     private IEnumerator Walk()
     {
+        Vector3 oldPosition = transform.position;
+
         currentState = NPCState.Walking;
 
         yield return character.Move(movementPattern[currentPatternIndex]);
-        currentPatternIndex = (currentPatternIndex + 1) % movementPattern.Count;
+
+        if (transform.position != oldPosition)
+            currentPatternIndex = (currentPatternIndex + 1) % movementPattern.Count;
 
         currentState = NPCState.Idle;
     }

@@ -15,6 +15,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private int lettersPerSecond;
 
+    private Action OnDialogueFinished;
     private Dialogue dialogue;
     private WaitForSeconds letterAnimationRoutineDelay;
     private float letterAnimationDelay;
@@ -33,7 +34,7 @@ public class DialogueManager : MonoBehaviour
         letterAnimationDelay = 1f / lettersPerSecond;
     }
 
-    public IEnumerator ShowDialogue(Dialogue dialogue)
+    public IEnumerator ShowDialogue(Dialogue dialogue, Action OnDialogueFinished = null)
     {
         yield return new WaitForEndOfFrame();
 
@@ -41,6 +42,7 @@ public class DialogueManager : MonoBehaviour
 
         IsShowing = true;
         this.dialogue = dialogue;
+        this.OnDialogueFinished = OnDialogueFinished;
         dialogueBox.SetActive(true);
         StartCoroutine(TypeDialogue(dialogue.LinesList[0]));
     }
@@ -71,6 +73,7 @@ public class DialogueManager : MonoBehaviour
                 currentLine = 0;
                 IsShowing = false;
                 dialogueBox.SetActive(false);
+                OnDialogueFinished?.Invoke();
                 OnCloseDialogue?.Invoke();
             }
         }

@@ -8,6 +8,7 @@ using UnityEngine.TextCore.Text;
 public class PlayerController : MonoBehaviour
 {
     public event Action OnEncountered;
+    public event Action<Collider2D> OnEnterTrainerView;
 
     [SerializeField] private GameInput gameInput;
 
@@ -28,7 +29,7 @@ public class PlayerController : MonoBehaviour
 
         if (inputVector != Vector2.zero)
         {
-            StartCoroutine(character.Move(inputVector, CheckForEncounters));
+            StartCoroutine(character.Move(inputVector, OnMoveOver));
         }
 
         character.HandleUpdate();
@@ -56,6 +57,17 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void CheckIfInTrainerView()
+    {
+        Collider2D collider = Physics2D.OverlapCircle(transform.position, character.OverlapRadius, GameLayers.Instance.FOVLayer);
+
+        if (collider != null)
+        {
+            character.Animator.IsMoving = false;
+            OnEnterTrainerView?.Invoke(collider);
+        }
+    }
+
     private void Interact()
     {
         Vector3 facingDirection = new(character.Animator.MoveX, character.Animator.MoveY);
@@ -68,5 +80,11 @@ public class PlayerController : MonoBehaviour
         {
             collider.GetComponent<IInteractable>()?.Interact(transform);
         }
+    }
+
+    private void OnMoveOver()
+    {
+        CheckForEncounters();
+        CheckIfInTrainerView();
     }
 }

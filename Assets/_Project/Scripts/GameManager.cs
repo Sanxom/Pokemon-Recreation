@@ -6,7 +6,8 @@ public enum GameState
 {
     FreeRoam,
     Battle,
-    Dialogue
+    Dialogue,
+    Cutscene
 }
 
 public class GameManager : MonoBehaviour
@@ -15,7 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerController playerController;
     [SerializeField] private BattleSystem battleSystem;
 
-    private GameState state;
+    private GameState currentState;
 
     private void Awake()
     {
@@ -25,6 +26,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         playerController.OnEncountered += StartBattle;
+        playerController.OnEnterTrainerView += OnEnterTrainerView;
         battleSystem.OnBattleOver += EndBattle;
         DialogueManager.Instance.OnShowDialogue += OnShowDialogue;
         DialogueManager.Instance.OnCloseDialogue += OnCloseDialogue;
@@ -33,6 +35,7 @@ public class GameManager : MonoBehaviour
     private void OnDestroy()
     {
         playerController.OnEncountered -= StartBattle;
+        playerController.OnEnterTrainerView -= OnEnterTrainerView;
         battleSystem.OnBattleOver -= EndBattle;
         DialogueManager.Instance.OnShowDialogue -= OnShowDialogue;
         DialogueManager.Instance.OnCloseDialogue -= OnCloseDialogue;
@@ -40,15 +43,15 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (state == GameState.FreeRoam)
+        if (currentState == GameState.FreeRoam)
         {
             playerController.HandleUpdate();
         }
-        else if (state == GameState.Battle)
+        else if (currentState == GameState.Battle)
         {
             battleSystem.HandleUpdate();
         }
-        else if (state == GameState.Dialogue)
+        else if (currentState == GameState.Dialogue)
         {
             DialogueManager.Instance.HandleUpdate();
         }
@@ -56,7 +59,7 @@ public class GameManager : MonoBehaviour
 
     private void StartBattle()
     {
-        state = GameState.Battle;
+        currentState = GameState.Battle;
         battleSystem.gameObject.SetActive(true);
         freeRoamCamera.gameObject.SetActive(false);
 
@@ -68,19 +71,29 @@ public class GameManager : MonoBehaviour
 
     private void EndBattle(bool hasWon)
     {
-        state = GameState.FreeRoam;
+        currentState = GameState.FreeRoam;
         battleSystem.gameObject.SetActive(false);
         freeRoamCamera.gameObject.SetActive(true);
     }
 
     private void OnShowDialogue()
     {
-        state = GameState.Dialogue;
+        currentState = GameState.Dialogue;
     }
 
     private void OnCloseDialogue()
     {
-        if (state == GameState.Dialogue)
-            state = GameState.FreeRoam;
+        if (currentState == GameState.Dialogue)
+            currentState = GameState.FreeRoam;
+    }
+
+    private void OnEnterTrainerView(Collider2D trainerCollider)
+    {
+        TrainerController trainer = trainerCollider.GetComponentInParent<TrainerController>();
+        if (trainer != null)
+        {
+            currentState = GameState.Cutscene;
+            StartCoroutine(trainer.TriggerTrainerBattle(playerController));
+        }
     }
 }

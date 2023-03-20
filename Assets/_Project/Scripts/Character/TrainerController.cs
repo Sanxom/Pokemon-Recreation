@@ -6,11 +6,16 @@ public class TrainerController : MonoBehaviour
 {
     [SerializeField] private GameObject exclamationGO;
     [SerializeField] private GameObject fovGO;
+    [SerializeField] private Sprite sprite;
     [SerializeField] private Dialogue dialogue;
+    [SerializeField] private string trainerName;
 
     private WaitForSeconds battleDelayRoutine;
     private Character character;
     private float battleDelayDuration = 0.5f;
+
+    public string TrainerName => trainerName;
+    public Sprite Sprite => sprite;
 
     private void Awake()
     {
@@ -40,7 +45,7 @@ public class TrainerController : MonoBehaviour
         // Show Dialogue
         StartCoroutine(DialogueManager.Instance.ShowDialogue(dialogue, () =>
         {
-            print("Starting Trainer Battle!");
+            GameManager.Instance.StartTrainerBattle(this);
         }));
     }
 

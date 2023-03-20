@@ -43,10 +43,16 @@ public class BattleUnit : MonoBehaviour
         else
             image.sprite = Pokemon.PokemonBase.FrontSprite;
 
+        unitHUD.gameObject.SetActive(true);
         unitHUD.SetData(pokemon);
 
         image.color = originalColor;
         PlayEnterAnimation();
+    }
+
+    public void Clear()
+    {
+        unitHUD.gameObject.SetActive(false);
     }
 
     public void PlayEnterAnimation()

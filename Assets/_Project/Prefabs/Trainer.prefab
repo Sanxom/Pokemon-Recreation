@@ -155,6 +155,7 @@ GameObject:
   - component: {fileID: 3847726515092111163}
   - component: {fileID: 3847726515092111109}
   - component: {fileID: 3847726515092111110}
+  - component: {fileID: 2720066743859168570}
   m_Layer: 8
   m_Name: Trainer
   m_TagString: Untagged
@@ -169,7 +170,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3847726515092111167}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.5, y: 0.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -254,9 +255,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   exclamationGO: {fileID: 2720066743310994294}
   fovGO: {fileID: 2720066744832438908}
+  sprite: {fileID: 21300000, guid: ace55bda7cb70ac4180207ce347c6890, type: 3}
   dialogue:
     linesList:
     - '"Time to battle!"'
+  trainerName: Cool Trainer Mike
+--- !u!114 &2720066743859168570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3847726515092111167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d477e776a7ae9b94bb0bf621a442fdf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pokemonList:
+  - pokemonBase: {fileID: 11400000, guid: e0184a1b970f6bb4c9d5fb852af33af4, type: 2}
+    level: 7
+  - pokemonBase: {fileID: 11400000, guid: 46fdcc19522d4a34db9f3df23ba60eb1, type: 2}
+    level: 8
 --- !u!1 &3847726516112354847
 GameObject:
   m_ObjectHideFlags: 0

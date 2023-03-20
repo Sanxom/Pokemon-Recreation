@@ -7,13 +7,18 @@ using UnityEngine.TextCore.Text;
 
 public class PlayerController : MonoBehaviour
 {
-    public event Action OnEncountered;
+    public event Action OnWildPokemonEncountered;
     public event Action<Collider2D> OnEnterTrainerView;
 
     [SerializeField] private GameInput gameInput;
+    [SerializeField] private Sprite sprite;
+    [SerializeField] private string playerName;
 
     private Character character;
     private Vector2 inputVector;
+
+    public string PlayerName => playerName;
+    public Sprite Sprite => sprite;
 
     private void Awake()
     {
@@ -52,7 +57,7 @@ public class PlayerController : MonoBehaviour
             if (UnityEngine.Random.Range(1, 101) <= 10)
             {
                 character.Animator.IsMoving = false;
-                OnEncountered?.Invoke();
+                OnWildPokemonEncountered?.Invoke();
             }
         }
     }

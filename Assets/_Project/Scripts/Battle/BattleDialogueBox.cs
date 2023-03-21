@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class BattleDialogueBox : MonoBehaviour
 {
-    [SerializeField] private GameObject actionSelector;
-    [SerializeField] private GameObject moveSelector;
-    [SerializeField] private GameObject moveDetails;
+    [SerializeField] private GameObject actionSelectorGO;
+    [SerializeField] private GameObject moveSelectorGO;
+    [SerializeField] private GameObject moveDetailsGO;
+    [SerializeField] private GameObject choiceBoxGO;
     [SerializeField] private Color highlightedColor;
 
     [SerializeField] private List<TextMeshProUGUI> actionTextList;
@@ -15,6 +16,8 @@ public class BattleDialogueBox : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI ppText;
     [SerializeField] private TextMeshProUGUI moveTypeText;
+    [SerializeField] private TextMeshProUGUI yesText;
+    [SerializeField] private TextMeshProUGUI noText;
 
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private int lettersPerSecond;
@@ -55,13 +58,18 @@ public class BattleDialogueBox : MonoBehaviour
 
     public void EnableActionSelector(bool enabled)
     {
-        actionSelector.SetActive(enabled);
+        actionSelectorGO.SetActive(enabled);
     }
 
     public void EnableMoveSelector(bool enabled)
     {
-        moveSelector.SetActive(enabled);
-        moveDetails.SetActive(enabled);
+        moveSelectorGO.SetActive(enabled);
+        moveDetailsGO.SetActive(enabled);
+    }
+
+    public void EnableChoiceBox(bool enabled)
+    {
+        choiceBoxGO.SetActive(enabled);
     }
 
     public void UpdateActionSelection(int selectedAction)
@@ -94,6 +102,20 @@ public class BattleDialogueBox : MonoBehaviour
             ppText.color = new Color(1f, 0.647f, 0f);
         else
             ppText.color = Color.black;
+    }
+
+    public void UpdateChoiceBox(bool isYesSelected)
+    {
+        if (isYesSelected)
+        {
+            yesText.color = highlightedColor;
+            noText.color = Color.black;
+        }
+        else
+        {
+            noText.color = highlightedColor;
+            yesText.color = Color.black;
+        }
     }
 
     public void SetMoveNames(List<Move> moveList)

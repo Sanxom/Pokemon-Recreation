@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerController playerController;
     [SerializeField] private BattleSystem battleSystem;
 
+    private TrainerController trainer;
     private GameState currentState;
 
     private void Awake()
@@ -67,6 +68,7 @@ public class GameManager : MonoBehaviour
         battleSystem.gameObject.SetActive(true);
         freeRoamCamera.gameObject.SetActive(false);
 
+        this.trainer = trainer;
         PokemonParty playerParty = playerController.GetComponent<PokemonParty>();
         PokemonParty trainerParty = trainer.GetComponent<PokemonParty>();
 
@@ -87,6 +89,12 @@ public class GameManager : MonoBehaviour
 
     private void EndBattle(bool hasWon)
     {
+        if (trainer != null && hasWon)
+        {
+            trainer.BattleLost();
+            trainer = null;
+        }
+
         currentState = GameState.FreeRoam;
         battleSystem.gameObject.SetActive(false);
         freeRoamCamera.gameObject.SetActive(true);

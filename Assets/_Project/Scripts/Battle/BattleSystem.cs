@@ -12,6 +12,7 @@ public enum BattleState
     RunningTurn,
     Busy,
     PartyScreen,
+    AboutToUse,
     BattleOver
 }
 
@@ -49,6 +50,7 @@ public class BattleSystem : MonoBehaviour
     private int currentMove;
     private int currentMember;
     private bool isTrainerBattle = false;
+    private bool aboutToUseChoice = true;
 
     private void Start()
     {
@@ -58,6 +60,8 @@ public class BattleSystem : MonoBehaviour
 
     public void StartWildBattle(PokemonParty playerParty, Pokemon wildPokemon)
     {
+        isTrainerBattle = false;
+
         this.playerParty = playerParty;
         this.wildPokemon = wildPokemon;
         StartCoroutine(SetupBattle());
@@ -91,6 +95,10 @@ public class BattleSystem : MonoBehaviour
         else if (currentState == BattleState.PartyScreen)
         {
             HandlePartySelection();
+        }
+        else if (currentState == BattleState.AboutToUse)
+        {
+            HandleAboutToUse();
         }
     }
 
@@ -287,7 +295,13 @@ public class BattleSystem : MonoBehaviour
 
         yield return SendOutNewPokemon(newPokemon);
 
-        currentState = BattleState.RunningTurn;
+        if (previousState == null)
+            currentState = BattleState.RunningTurn;
+        else if (previousState == BattleState.AboutToUse)
+        {
+            previousState = null;
+            StartCoroutine(SendOutNextTrainerPokemon());
+        }
     }
 
     private IEnumerator SendOutNewPokemon(Pokemon nextPokemon)
@@ -297,10 +311,11 @@ public class BattleSystem : MonoBehaviour
         yield return dialogueBox.TypeDialogue($"Go, {nextPokemon.PokemonBase.PokemonName}!");
     }
 
-    private IEnumerator SendOutNextTrainerPokemon(Pokemon nextPokemon)
+    private IEnumerator SendOutNextTrainerPokemon()
     {
         currentState = BattleState.Busy;
 
+        Pokemon nextPokemon = trainerParty.GetHealthyPokemon();
         enemyUnit.Setup(nextPokemon);
         yield return dialogueBox.TypeDialogue($"{trainer.TrainerName} sends out {nextPokemon.PokemonBase.PokemonName}!");
 
@@ -324,6 +339,7 @@ public class BattleSystem : MonoBehaviour
             yield return faintRoutineDelay;
 
             CheckForBattleOver(sourceUnit);
+            yield return new WaitUntil(() => currentState == BattleState.RunningTurn);
         }
     }
 
@@ -398,6 +414,15 @@ public class BattleSystem : MonoBehaviour
             ActionSelection();
     }
 
+    private IEnumerator AboutToUse(Pokemon newPokemon)
+    {
+        currentState = BattleState.Busy;
+        yield return dialogueBox.TypeDialogue($"{trainer.TrainerName} is about to send out {newPokemon.PokemonBase.PokemonName}. Do you want to change Pokemon?");
+
+        currentState = BattleState.AboutToUse;
+        dialogueBox.EnableChoiceBox(true);
+    }
+
     private bool CheckIfMoveHits(Move move, Pokemon sourcePokemon, Pokemon targetPokemon)
     {
         if (move.Base.AlwaysHits)
@@ -442,7 +467,7 @@ public class BattleSystem : MonoBehaviour
             {
                 Pokemon nextPokemon = trainerParty.GetHealthyPokemon();
                 if (nextPokemon != null)
-                    StartCoroutine(SendOutNextTrainerPokemon(nextPokemon));
+                    StartCoroutine(AboutToUse(nextPokemon));
                 else
                     BattleOver(true);
 
@@ -602,8 +627,50 @@ public class BattleSystem : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
+            if (playerUnit.Pokemon.Health <= 0)
+            {
+                partyScreen.SetMessageText("You have to choose a Pokemon to continue.");
+                return;
+            }
+
             partyScreen.gameObject.SetActive(false);
-            ActionSelection();
+
+            if (previousState == BattleState.AboutToUse)
+            {
+                previousState = null;
+                StartCoroutine(SendOutNextTrainerPokemon());
+            }
+            else
+                ActionSelection();
+        }
+    }
+
+    private void HandleAboutToUse()
+    {
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            aboutToUseChoice = !aboutToUseChoice;
+
+        dialogueBox.UpdateChoiceBox(aboutToUseChoice);
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            dialogueBox.EnableChoiceBox(false);
+            if (aboutToUseChoice)
+            {
+                // Yes option
+                previousState = BattleState.AboutToUse;
+                OpenPartyScreen();
+            }
+            else
+            {
+                // No option
+                StartCoroutine(SendOutNextTrainerPokemon());
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            dialogueBox.EnableChoiceBox(false);
+            StartCoroutine(SendOutNextTrainerPokemon());
         }
     }
 }

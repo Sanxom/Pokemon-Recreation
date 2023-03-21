@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrainerController : MonoBehaviour
+public class TrainerController : MonoBehaviour, IInteractable
 {
     [SerializeField] private GameObject exclamationGO;
     [SerializeField] private GameObject fovGO;
     [SerializeField] private Sprite sprite;
     [SerializeField] private Dialogue dialogue;
+    [SerializeField] private Dialogue dialogueAfterBattle;
     [SerializeField] private string trainerName;
 
     private WaitForSeconds battleDelayRoutine;
     private Character character;
     private float battleDelayDuration = 0.5f;
+    private bool battleLost = false;
 
     public string TrainerName => trainerName;
     public Sprite Sprite => sprite;
@@ -26,6 +28,11 @@ public class TrainerController : MonoBehaviour
     private void Start()
     {
         SetFOVRotation(character.Animator.DefaultFacingDirection);
+    }
+
+    private void Update()
+    {
+        character.HandleUpdate();
     }
 
     public IEnumerator TriggerTrainerBattle(PlayerController player)
@@ -49,6 +56,23 @@ public class TrainerController : MonoBehaviour
         }));
     }
 
+    public void Interact(Transform initiator)
+    {
+        character.LookTowards(initiator.position);
+
+        if (!battleLost)
+        {
+            StartCoroutine(DialogueManager.Instance.ShowDialogue(dialogue, () =>
+            {
+                GameManager.Instance.StartTrainerBattle(this);
+            }));
+        }
+        else
+        {
+            StartCoroutine(DialogueManager.Instance.ShowDialogue(dialogueAfterBattle));
+        }
+    }
+
     public void SetFOVRotation(FacingDirection direction)
     {
         float angle = 0f;
@@ -61,5 +85,11 @@ public class TrainerController : MonoBehaviour
             angle = 270f;
 
         fovGO.transform.eulerAngles = new Vector3(0f, 0f, angle);
+    }
+
+    public void BattleLost()
+    {
+        battleLost = true;
+        fovGO.SetActive(false);
     }
 }

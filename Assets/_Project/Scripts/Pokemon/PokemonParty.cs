@@ -21,4 +21,14 @@ public class PokemonParty : MonoBehaviour
     {
         return pokemonList.Where(x => x.Health > 0).FirstOrDefault();
     }
+
+    public void AddPokemon(Pokemon newPokemon)
+    {
+        if (pokemonList.Count < 6)
+            pokemonList.Add(newPokemon);
+        else
+        {
+            // TODO: Transfer to PC
+        }
+    }
 }

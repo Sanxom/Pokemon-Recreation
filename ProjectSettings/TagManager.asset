@@ -53,3 +53,6 @@ TagManager:
   - name: OnTopOfPlayer
     uniqueID: 3456051881
     locked: 0
+  - name: Battle
+    uniqueID: 2046623511
+    locked: 0

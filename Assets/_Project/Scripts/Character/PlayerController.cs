@@ -16,6 +16,9 @@ public class PlayerController : MonoBehaviour
 
     private Character character;
     private Vector2 inputVector;
+    private int minEncounterRate = 1;
+    private int maxEncounterRate = 101;
+    private int encounterPercentage = 100;
 
     public string PlayerName => playerName;
     public Sprite Sprite => sprite;
@@ -54,7 +57,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Physics2D.OverlapCircle(transform.position, character.OverlapRadius, GameLayers.Instance.GrassLayer) != null)
         {
-            if (UnityEngine.Random.Range(1, 101) <= 10)
+            if (UnityEngine.Random.Range(minEncounterRate, maxEncounterRate) <= encounterPercentage)
             {
                 character.Animator.IsMoving = false;
                 OnWildPokemonEncountered?.Invoke();

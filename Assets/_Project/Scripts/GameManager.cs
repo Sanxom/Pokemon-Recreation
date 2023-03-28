@@ -84,7 +84,10 @@ public class GameManager : MonoBehaviour
         PokemonParty playerParty = playerController.GetComponent<PokemonParty>();
         Pokemon wildPokemon = FindObjectOfType<MapArea>().GetComponent<MapArea>().GetRandomWildPokemon();
 
-        battleSystem.StartWildBattle(playerParty, wildPokemon);
+        // We create this "Copy" in order to animate this copy instead of animating the base wild Pokemon which is just a "template" Pokemon to spawn
+        Pokemon wildPokemonCopy = new(wildPokemon.PokemonBase, wildPokemon.Level);
+
+        battleSystem.StartWildBattle(playerParty, wildPokemonCopy);
     }
 
     private void EndBattle(bool hasWon)

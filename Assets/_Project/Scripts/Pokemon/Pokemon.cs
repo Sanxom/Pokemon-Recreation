@@ -17,7 +17,7 @@ public class Pokemon
     // Properties
     public Dictionary<Stat, int> StatDictionary { get; private set; }
     public Dictionary<Stat, int> StatBoostDictionary { get; private set; }
-    public Queue<string> StatusChangeQueue { get; private set; } = new Queue<string>();
+    public Queue<string> StatusChangeQueue { get; private set; }
     public List<Move> MoveList { get; set; }
     public Move CurrentMove { get; set; }
     public PokemonBase PokemonBase => pokemonBase;
@@ -36,6 +36,14 @@ public class Pokemon
     public int Speed => GetStatWithBoost(Stat.Speed);
     public bool HasHealthChanged { get; set; }
 
+    public Pokemon(PokemonBase pBase, int pLevel)
+    {
+        pokemonBase = pBase;
+        level = pLevel;
+
+        Init();
+    }
+
     public void Init()
     {
         MoveList = new List<Move>();
@@ -52,6 +60,7 @@ public class Pokemon
 
         CalculateStats();
 
+        StatusChangeQueue = new Queue<string>();
         ResetStatBoosts();
 
         Health = MaxHealth;

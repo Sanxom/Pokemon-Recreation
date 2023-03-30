@@ -8,7 +8,7 @@ public class Character : MonoBehaviour
     [SerializeField] private float moveSpeed;
 
     private CharacterAnimator animator;
-    private float overlapRadius = 0.25f;
+    private float overlapRadius = 0.15f;
 
     public CharacterAnimator Animator => animator;
     public float OverlapRadius => overlapRadius;

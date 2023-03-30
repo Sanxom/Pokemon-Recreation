@@ -51,6 +51,7 @@ public class BattleSystem : MonoBehaviour
     private int currentAction;
     private int currentMove;
     private int currentMember;
+    private int escapeAttempts;
     private bool isTrainerBattle = false;
     private bool aboutToUseChoice = true;
 
@@ -152,6 +153,7 @@ public class BattleSystem : MonoBehaviour
             dialogueBox.SetMoveNames(playerUnit.Pokemon.MoveList);
         }
 
+        escapeAttempts = 0;
         partyScreen.Init();
         ActionSelection();
     }
@@ -410,6 +412,11 @@ public class BattleSystem : MonoBehaviour
                 dialogueBox.EnableActionSelector(false);
                 yield return ThrowPokeball();
             }
+            else if (playerAction == BattleAction.Run)
+            {
+                dialogueBox.EnableActionSelector(false);
+                yield return TryToEscape();
+            }
 
             // Enemy Turn
             Move enemyMove = enemyUnit.Pokemon.GetRandomMoveWithPP();
@@ -500,6 +507,48 @@ public class BattleSystem : MonoBehaviour
 
             Destroy(pokeballObject);
             currentState = BattleState.RunningTurn;
+        }
+    }
+
+    private IEnumerator TryToEscape()
+    {
+        currentState = BattleState.Busy;
+
+        if (isTrainerBattle)
+        {
+            yield return dialogueBox.TypeDialogue("You can't run from trainer battles!");
+            currentState = BattleState.RunningTurn;
+            yield break;
+        }
+
+        ++escapeAttempts;
+
+        int playerSpeed = playerUnit.Pokemon.Speed;
+        int enemySpeed = enemyUnit.Pokemon.Speed;
+        int playerSpeedMultiplier = 128;
+        int enemySpeedAddition = 30;
+        int escapeChanceModulus = 256;
+
+        if (enemySpeed < playerSpeed)
+        {
+            yield return dialogueBox.TypeDialogue("Got away safely!");
+            BattleOver(true);
+        }
+        else
+        {
+            float chanceToEscape = (playerSpeed * playerSpeedMultiplier) / enemySpeed + enemySpeedAddition * escapeAttempts;
+            chanceToEscape %= escapeChanceModulus;
+
+            if (UnityEngine.Random.Range(0, 256) < chanceToEscape)
+            {
+                yield return dialogueBox.TypeDialogue("Got away safely!");
+                BattleOver(true);
+            }
+            else
+            {
+                yield return dialogueBox.TypeDialogue("Can't escape!");
+                currentState = BattleState.RunningTurn;
+            }
         }
     }
 
@@ -629,6 +678,7 @@ public class BattleSystem : MonoBehaviour
                     break;
                 case 3:
                     // Run
+                    StartCoroutine(RunTurns(BattleAction.Run));
                     break;
             }
         }

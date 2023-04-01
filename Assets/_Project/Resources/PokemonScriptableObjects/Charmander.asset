@@ -19,12 +19,14 @@ MonoBehaviour:
     from the tip of its tail.
   type1: 2
   type2: 0
+  growthRate: 3
   maxHealth: 39
   attack: 52
   defense: 43
   spAttack: 60
   spDefense: 50
   speed: 65
+  xpYield: 62
   catchRate: 45
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: 94d73989e76882643a5faa6fbd9e9ede, type: 2}

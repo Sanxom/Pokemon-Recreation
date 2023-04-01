@@ -28,6 +28,7 @@ public class Pokemon
     public int VolatileStatusTime { get; set; }
     public int Level => level;
     public int Health { get; set; }
+    public int XP { get; set; }
     public int MaxHealth => GetStatWithBoost(Stat.MaxHealth);
     public int Attack => GetStatWithBoost(Stat.Attack);
     public int Defense => GetStatWithBoost(Stat.Defense);
@@ -57,6 +58,8 @@ public class Pokemon
             if (MoveList.Count >= 4)
                 break;
         }
+
+        XP = PokemonBase.GetXPForLevel(level);
 
         CalculateStats();
 

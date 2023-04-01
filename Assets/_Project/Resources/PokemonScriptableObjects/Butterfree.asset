@@ -19,12 +19,14 @@ MonoBehaviour:
     dust into the air.
   type1: 12
   type2: 10
+  growthRate: 2
   maxHealth: 60
   attack: 45
   defense: 50
   spAttack: 80
   spDefense: 80
   speed: 70
+  xpYield: 198
   catchRate: 255
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: df0b9d472b9aa5a4d865cb9fd89535b6, type: 2}

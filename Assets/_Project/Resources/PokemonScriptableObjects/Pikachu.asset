@@ -19,12 +19,14 @@ MonoBehaviour:
     on its cheeks.
   type1: 4
   type2: 0
+  growthRate: 2
   maxHealth: 35
   attack: 55
   defense: 30
   spAttack: 50
   spDefense: 40
   speed: 90
+  xpYield: 112
   catchRate: 190
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: dfb49eef2c8b4cd46a0f313d73e3a4f9, type: 2}

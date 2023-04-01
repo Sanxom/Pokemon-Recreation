@@ -19,12 +19,14 @@ MonoBehaviour:
     and grows with this Pokemon.
   type1: 5
   type2: 8
+  growthRate: 3
   maxHealth: 45
   attack: 49
   defense: 49
   spAttack: 65
   spDefense: 65
   speed: 45
+  xpYield: 64
   catchRate: 45
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: dfe4c841396cd3d498f8cf25860b9813, type: 2}

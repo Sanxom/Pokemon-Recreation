@@ -166,8 +166,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wildPokemonList:
-  - pokemonBase: {fileID: 11400000, guid: 0d6608ab05c0820438f72da90c333a2f, type: 2}
-    level: 12
+  - pokemonBase: {fileID: 11400000, guid: cc12eac93b06a03468de9f2b4f8d747d, type: 2}
+    level: 10
 --- !u!4 &15673522
 Transform:
   m_ObjectHideFlags: 0
@@ -2050,7 +2050,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5, y: -2.8, z: -10}
+  m_LocalPosition: {x: 0.5, y: -3.2, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3275,7 +3275,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 763018698}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5, y: -2.8, z: 0}
+  m_LocalPosition: {x: 0.5, y: -3.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3312,7 +3312,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pokemonList:
   - pokemonBase: {fileID: 11400000, guid: 0675028d7d69979489940b2e3e7e743e, type: 2}
-    level: 12
+    level: 20
   - pokemonBase: {fileID: 11400000, guid: e0184a1b970f6bb4c9d5fb852af33af4, type: 2}
     level: 13
   - pokemonBase: {fileID: 11400000, guid: 0d6608ab05c0820438f72da90c333a2f, type: 2}
@@ -15051,7 +15051,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2094658868}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5, y: -2.8, z: -10}
+  m_LocalPosition: {x: 0.5, y: -3.2, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15135,6 +15135,10 @@ PrefabInstance:
     - target: {fileID: 3847726515092111167, guid: 3e9160c21f10f814385fc041f81da042, type: 3}
       propertyPath: m_Name
       value: Trainer
+      objectReference: {fileID: 0}
+    - target: {fileID: 3847726515092111167, guid: 3e9160c21f10f814385fc041f81da042, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e9160c21f10f814385fc041f81da042, type: 3}

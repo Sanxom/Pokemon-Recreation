@@ -26,7 +26,7 @@ public class Character : MonoBehaviour
         animator.MoveY = Mathf.Clamp(moveVector.y, -1f, 1f);
 
         // Set Target Position
-        var targetPos = transform.position;
+        Vector3 targetPos = transform.position;
         targetPos.x += moveVector.x;
         targetPos.y += moveVector.y;
 
@@ -75,14 +75,6 @@ public class Character : MonoBehaviour
         Vector3 difference = targetPos - transform.position;
         Vector3 direction = difference.normalized;
         if (Physics2D.BoxCast(transform.position + direction, new Vector2(0.2f, 0.2f), 0f, direction, difference.magnitude - 1, GameLayers.Instance.SolidObjectsLayer | GameLayers.Instance.InteractableLayer | GameLayers.Instance.PlayerLayer))
-            return false;
-
-        return true;
-    }
-
-    private bool IsWalkable(Vector3 targetPos)
-    {
-        if (Physics2D.OverlapCircle(targetPos, overlapRadius, GameLayers.Instance.SolidObjectsLayer | GameLayers.Instance.InteractableLayer) != null)
             return false;
 
         return true;

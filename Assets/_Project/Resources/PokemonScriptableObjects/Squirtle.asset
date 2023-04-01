@@ -19,12 +19,14 @@ MonoBehaviour:
     sprays foam from its mouth.
   type1: 3
   type2: 0
+  growthRate: 3
   maxHealth: 44
   attack: 48
   defense: 65
   spAttack: 50
   spDefense: 64
   speed: 43
+  xpYield: 63
   catchRate: 45
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: dfe4c841396cd3d498f8cf25860b9813, type: 2}

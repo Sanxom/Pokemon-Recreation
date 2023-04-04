@@ -37,8 +37,8 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private BattleDialogueBox dialogueBox;
     [SerializeField] private PartyScreen partyScreen;
 
+    private WaitForSeconds oneSecondRoutineDelay;
     private WaitForSeconds attackRoutineDelay;
-    private WaitForSeconds faintRoutineDelay;
     private PlayerController player;
     private TrainerController trainer;
     private PokemonParty playerParty;
@@ -47,7 +47,7 @@ public class BattleSystem : MonoBehaviour
     private BattleState currentState;
     private BattleState? previousState;
     private float attackDelay = 0.5f;
-    private float faintDelay = 1f;
+    private float oneSecondDelay = 1f;
     private int currentAction;
     private int currentMove;
     private int currentMember;
@@ -57,8 +57,8 @@ public class BattleSystem : MonoBehaviour
 
     private void Start()
     {
+        oneSecondRoutineDelay = new WaitForSeconds(oneSecondDelay);
         attackRoutineDelay = new WaitForSeconds(attackDelay);
-        faintRoutineDelay = new WaitForSeconds(faintDelay);
     }
 
     public void StartWildBattle(PokemonParty playerParty, Pokemon wildPokemon)
@@ -288,7 +288,7 @@ public class BattleSystem : MonoBehaviour
             yield return dialogueBox.TypeDialogue($"Come back, {playerUnit.Pokemon.PokemonBase.PokemonName}!");
             playerUnit.PlayFaintAnimation();
             // TODO: Create a new animation for swapping Pokemon.
-            yield return faintRoutineDelay;
+            yield return oneSecondRoutineDelay;
         }
 
         yield return SendOutNewPokemon(newPokemon);
@@ -431,7 +431,7 @@ public class BattleSystem : MonoBehaviour
     {
         yield return dialogueBox.TypeDialogue($"{faintedUnit.Pokemon.PokemonBase.PokemonName} fainted.");
         faintedUnit.PlayFaintAnimation();
-        yield return faintRoutineDelay;
+        yield return oneSecondRoutineDelay;
 
         if (!faintedUnit.IsPlayerUnit)
         {
@@ -443,8 +443,18 @@ public class BattleSystem : MonoBehaviour
             int xpGain = Mathf.FloorToInt((xpYield * enemyLevel * trainerBonus) / divisionNum);
             playerUnit.Pokemon.XP += xpGain;
             yield return dialogueBox.TypeDialogue($"{playerUnit.Pokemon.PokemonBase.PokemonName} gained {xpGain} xp.");
+            yield return playerUnit.UnitHUD.SetXPBarValueSmooth();
 
             // Check level up
+            while (playerUnit.Pokemon.CheckForLevelUp())
+            {
+                playerUnit.UnitHUD.SetLevel();
+                yield return dialogueBox.TypeDialogue($"{playerUnit.Pokemon.PokemonBase.PokemonName} grew to level {playerUnit.Pokemon.Level}!");
+
+                yield return playerUnit.UnitHUD.SetXPBarValueSmooth(true);
+            }
+
+            yield return oneSecondRoutineDelay;
         }
 
         CheckForBattleOver(faintedUnit);

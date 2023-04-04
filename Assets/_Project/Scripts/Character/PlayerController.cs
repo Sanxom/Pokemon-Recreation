@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private string playerName;
 
     private Character character;
+    private Vector3 transformOffset = new(0, 0.3f);
     private Vector2 inputVector;
     private int minEncounterRate = 1;
     private int maxEncounterRate = 101;
@@ -55,7 +56,7 @@ public class PlayerController : MonoBehaviour
 
     private void CheckForEncounters()
     {
-        if (Physics2D.OverlapCircle(transform.position, character.OverlapRadius, GameLayers.Instance.GrassLayer) != null)
+        if (Physics2D.OverlapCircle(transform.position - transformOffset, character.OverlapRadius, GameLayers.Instance.GrassLayer) != null)
         {
             if (UnityEngine.Random.Range(minEncounterRate, maxEncounterRate) <= encounterPercentage)
             {
@@ -67,7 +68,7 @@ public class PlayerController : MonoBehaviour
 
     private void CheckIfInTrainerView()
     {
-        Collider2D collider = Physics2D.OverlapCircle(transform.position, character.OverlapRadius, GameLayers.Instance.FOVLayer);
+        Collider2D collider = Physics2D.OverlapCircle(transform.position - transformOffset, character.OverlapRadius, GameLayers.Instance.FOVLayer);
 
         if (collider != null)
         {

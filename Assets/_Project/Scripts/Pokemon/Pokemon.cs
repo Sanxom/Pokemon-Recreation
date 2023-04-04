@@ -137,6 +137,17 @@ public class Pokemon
         return canPerformMove;
     }
 
+    public bool CheckForLevelUp()
+    {
+        if (XP >= PokemonBase.GetXPForLevel(level + 1))
+        {
+            ++level;
+            return true;
+        }
+
+        return false;
+    }
+
     public void ApplyBoosts(List<StatBoost> statBoostList, BattleUnit battleUnit)
     {
         foreach (StatBoost statBoost in statBoostList)

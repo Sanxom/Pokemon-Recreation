@@ -30,8 +30,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        playerController.OnWildPokemonEncountered += StartWildBattle;
-        playerController.OnEnterTrainerView += OnEnterTrainerView;
         battleSystem.OnBattleOver += EndBattle;
         DialogueManager.Instance.OnShowDialogue += OnShowDialogue;
         DialogueManager.Instance.OnCloseDialogue += OnCloseDialogue;
@@ -39,8 +37,6 @@ public class GameManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        playerController.OnWildPokemonEncountered -= StartWildBattle;
-        playerController.OnEnterTrainerView -= OnEnterTrainerView;
         battleSystem.OnBattleOver -= EndBattle;
         DialogueManager.Instance.OnShowDialogue -= OnShowDialogue;
         DialogueManager.Instance.OnCloseDialogue -= OnCloseDialogue;
@@ -75,7 +71,7 @@ public class GameManager : MonoBehaviour
         battleSystem.StartTrainerBattle(playerParty, trainerParty);
     }
 
-    private void StartWildBattle()
+    public void StartWildBattle()
     {
         currentState = GameState.Battle;
         battleSystem.gameObject.SetActive(true);
@@ -88,6 +84,15 @@ public class GameManager : MonoBehaviour
         Pokemon wildPokemonCopy = new(wildPokemon.PokemonBase, wildPokemon.Level);
 
         battleSystem.StartWildBattle(playerParty, wildPokemonCopy);
+    }
+
+    public void OnEnterTrainerView(TrainerController trainer)
+    {
+        if (trainer != null)
+        {
+            currentState = GameState.Cutscene;
+            StartCoroutine(trainer.TriggerTrainerBattle(playerController));
+        }
     }
 
     private void EndBattle(bool hasWon)
@@ -112,15 +117,5 @@ public class GameManager : MonoBehaviour
     {
         if (currentState == GameState.Dialogue)
             currentState = GameState.FreeRoam;
-    }
-
-    private void OnEnterTrainerView(Collider2D trainerCollider)
-    {
-        TrainerController trainer = trainerCollider.GetComponentInParent<TrainerController>();
-        if (trainer != null)
-        {
-            currentState = GameState.Cutscene;
-            StartCoroutine(trainer.TriggerTrainerBattle(playerController));
-        }
     }
 }

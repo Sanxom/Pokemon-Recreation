@@ -11,12 +11,15 @@ public class GameLayers : MonoBehaviour
     [SerializeField] private LayerMask interactableLayer;
     [SerializeField] private LayerMask playerLayer;
     [SerializeField] private LayerMask fOVLayer;
+    [SerializeField] private LayerMask portalLayer;
 
     public LayerMask SolidObjectsLayer => solidObjectsLayer;
     public LayerMask GrassLayer => grassLayer;
     public LayerMask InteractableLayer => interactableLayer;
     public LayerMask PlayerLayer => playerLayer;
     public LayerMask FOVLayer => fOVLayer;
+    public LayerMask PortalLayer => portalLayer;
+    public LayerMask TriggerableLayers => grassLayer | fOVLayer | portalLayer;
 
     private void Awake()
     {

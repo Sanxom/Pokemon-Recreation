@@ -7,9 +7,6 @@ using UnityEngine.TextCore.Text;
 
 public class PlayerController : MonoBehaviour
 {
-    public event Action OnWildPokemonEncountered;
-    public event Action<Collider2D> OnEnterTrainerView;
-
     [SerializeField] private GameInput gameInput;
     [SerializeField] private Sprite sprite;
     [SerializeField] private string playerName;
@@ -17,9 +14,6 @@ public class PlayerController : MonoBehaviour
     private Character character;
     private Vector3 transformOffset = new(0, 0.3f);
     private Vector2 inputVector;
-    private int minEncounterRate = 1;
-    private int maxEncounterRate = 101;
-    private int encounterPercentage = 100;
 
     public string PlayerName => playerName;
     public Sprite Sprite => sprite;
@@ -54,29 +48,6 @@ public class PlayerController : MonoBehaviour
         return inputVector;
     }
 
-    private void CheckForEncounters()
-    {
-        if (Physics2D.OverlapCircle(transform.position - transformOffset, character.OverlapRadius, GameLayers.Instance.GrassLayer) != null)
-        {
-            if (UnityEngine.Random.Range(minEncounterRate, maxEncounterRate) <= encounterPercentage)
-            {
-                character.Animator.IsMoving = false;
-                OnWildPokemonEncountered?.Invoke();
-            }
-        }
-    }
-
-    private void CheckIfInTrainerView()
-    {
-        Collider2D collider = Physics2D.OverlapCircle(transform.position - transformOffset, character.OverlapRadius, GameLayers.Instance.FOVLayer);
-
-        if (collider != null)
-        {
-            character.Animator.IsMoving = false;
-            OnEnterTrainerView?.Invoke(collider);
-        }
-    }
-
     private void Interact()
     {
         Vector3 facingDirection = new(character.Animator.MoveX, character.Animator.MoveY);
@@ -93,7 +64,16 @@ public class PlayerController : MonoBehaviour
 
     private void OnMoveOver()
     {
-        CheckForEncounters();
-        CheckIfInTrainerView();
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position - transformOffset, character.OverlapRadius, GameLayers.Instance.TriggerableLayers);
+
+        foreach (Collider2D collider in colliders)
+        {
+            if (collider.TryGetComponent(out IPlayerTriggerable triggerable))
+            {
+                character.Animator.IsMoving = false;
+                triggerable.OnPlayerTriggered(this);
+                break;
+            }
+        }
     }
 }

@@ -12,11 +12,13 @@ public class Character : MonoBehaviour
 
     public CharacterAnimator Animator => animator;
     public float OverlapRadius => overlapRadius;
+    public float OffsetY { get; private set; } = 0.3f;
     public bool IsMoving { get; private set; }
 
     private void Awake()
     {
         animator = GetComponentInChildren<CharacterAnimator>();
+        SetPositionAndSnapToTile(transform.position);
     }
 
     public IEnumerator Move(Vector2 moveVector, Action OnMoveOver = null)
@@ -63,6 +65,14 @@ public class Character : MonoBehaviour
         {
             Debug.LogError("Error in LookTowards: You cannot ask a character to look diagonally!");
         }
+    }
+
+    public void SetPositionAndSnapToTile(Vector2 pos)
+    {
+        pos.x = Mathf.Floor(pos.x) + 0.5f;
+        pos.y = Mathf.Floor(pos.y) + 0.5f + OffsetY;
+
+        transform.position = pos;
     }
 
     public void HandleUpdate()

@@ -12,11 +12,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private string playerName;
 
     private Character character;
-    private Vector3 transformOffset = new(0, 0.3f);
     private Vector2 inputVector;
 
     public string PlayerName => playerName;
     public Sprite Sprite => sprite;
+    public Character Character => character;
 
     private void Awake()
     {
@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnMoveOver()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position - transformOffset, character.OverlapRadius, GameLayers.Instance.TriggerableLayers);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position - new Vector3(0, character.OffsetY), character.OverlapRadius, GameLayers.Instance.TriggerableLayers);
 
         foreach (Collider2D collider in colliders)
         {

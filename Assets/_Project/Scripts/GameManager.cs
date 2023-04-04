@@ -7,7 +7,8 @@ public enum GameState
     FreeRoam,
     Battle,
     Dialogue,
-    Cutscene
+    Cutscene,
+    Paused
 }
 
 public class GameManager : MonoBehaviour
@@ -20,6 +21,7 @@ public class GameManager : MonoBehaviour
 
     private TrainerController trainer;
     private GameState currentState;
+    private GameState stateBeforePause;
 
     private void Awake()
     {
@@ -92,6 +94,19 @@ public class GameManager : MonoBehaviour
         {
             currentState = GameState.Cutscene;
             StartCoroutine(trainer.TriggerTrainerBattle(playerController));
+        }
+    }
+
+    public void PauseGame(bool pause)
+    {
+        if (pause)
+        {
+            stateBeforePause = currentState;
+            currentState = GameState.Paused;
+        }
+        else
+        {
+            currentState = stateBeforePause;
         }
     }
 

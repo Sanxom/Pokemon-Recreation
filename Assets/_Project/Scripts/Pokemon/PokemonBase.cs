@@ -89,6 +89,8 @@ public class TypeChart
 [CreateAssetMenu(fileName = "Pokemon", menuName = "Pokemon/Create New Pokemon")]
 public class PokemonBase : ScriptableObject
 {
+    public static int MaxNumOfMoves { get; set; } = 4;
+
     [SerializeField] private Sprite frontSprite;
     [SerializeField] private Sprite backSprite;
 
@@ -111,10 +113,10 @@ public class PokemonBase : ScriptableObject
     [SerializeField] private int xpYield;
     [SerializeField] private int catchRate = 255;
 
-    [SerializeField] private List<LearnableMoves> learnableMoves;
+    [SerializeField] private List<LearnableMove> learnableMoves;
 
     // Properties
-    public List<LearnableMoves> LearnableMoves => learnableMoves;
+    public List<LearnableMove> LearnableMoves => learnableMoves;
     public Sprite FrontSprite => frontSprite;
     public Sprite BackSprite => backSprite;
     public PokemonType Type1 => type1;
@@ -190,7 +192,7 @@ public class PokemonBase : ScriptableObject
 }
 
 [System.Serializable]
-public class LearnableMoves
+public class LearnableMove
 {
     [SerializeField] private MoveBase moveBase;
     [SerializeField] private int levelLearned;

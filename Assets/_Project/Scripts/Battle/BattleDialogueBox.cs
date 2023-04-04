@@ -24,7 +24,7 @@ public class BattleDialogueBox : MonoBehaviour
 
     private WaitForSeconds letterAnimationRoutineDelay;
     private WaitForSeconds dialogueEndRoutineDelay;
-    private float dialogueEndDelay = 1f;
+    private float dialogueEndDelay = 0.5f;
     private float letterAnimationDelay;
 
     private void Start()

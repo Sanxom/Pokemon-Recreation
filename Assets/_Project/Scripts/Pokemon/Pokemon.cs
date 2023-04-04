@@ -55,7 +55,7 @@ public class Pokemon
             if (move.LevelLearned <= level)
                 MoveList.Add(new Move(move.MoveBase));
 
-            if (MoveList.Count >= 4)
+            if (MoveList.Count >= PokemonBase.MaxNumOfMoves)
                 break;
         }
 
@@ -119,6 +119,11 @@ public class Pokemon
         return movesWithPP[randomMove];
     }
 
+    public LearnableMove GetLearnableMoveAtCurrentLevel()
+    {
+        return PokemonBase.LearnableMoves.Where(x => x.LevelLearned == level).FirstOrDefault();
+    }
+
     public bool OnBeforeMove()
     {
         bool canPerformMove = true;
@@ -172,6 +177,14 @@ public class Pokemon
                     StatusChangeQueue.Enqueue($"The enemy {pokemonBase.PokemonName}'s {stat} fell!");
             }
         }
+    }
+
+    public void LearnMove(LearnableMove moveToLearn)
+    {
+        if (MoveList.Count > PokemonBase.MaxNumOfMoves)
+            return;
+
+        MoveList.Add(new Move(moveToLearn.MoveBase));
     }
 
     public void SetStatus(ConditionID conditionID)

@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class EssentialObjectsSpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject essentialObjectPrefab;
+    [SerializeField] private GameObject essentialObjectsPrefab;
 
     private void Awake()
     {
-        EssentialObjects[] existingObjects = FindObjectsOfType<EssentialObjects>();
+        var existingObjects = FindObjectsOfType<EssentialObjects>();
+
         if (existingObjects.Length == 0)
-        {
-            Instantiate(essentialObjectPrefab, Vector3.zero, Quaternion.identity);
-        }
+            Instantiate(essentialObjectsPrefab, Vector3.zero, Quaternion.identity);
     }
 }

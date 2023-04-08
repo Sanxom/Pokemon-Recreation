@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour
     private GameState currentState;
     private GameState stateBeforePause;
 
+    public SceneDetails CurrentScene { get; private set; }
+    public SceneDetails PreviousScene { get; private set; }
+
     private void Awake()
     {
         Instance = this;
@@ -95,6 +98,12 @@ public class GameManager : MonoBehaviour
             currentState = GameState.Cutscene;
             StartCoroutine(trainer.TriggerTrainerBattle(playerController));
         }
+    }
+
+    public void SetCurrentScene(SceneDetails currentScene)
+    {
+        PreviousScene = CurrentScene;
+        CurrentScene = currentScene;
     }
 
     public void PauseGame(bool pause)

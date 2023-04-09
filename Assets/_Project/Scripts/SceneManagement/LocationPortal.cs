@@ -3,22 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.TextCore.Text;
 
-public enum DestinationIdentifier
-{
-    A,
-    B,
-    C,
-    D,
-    E
-}
-
-public class Portal : MonoBehaviour, IPlayerTriggerable
+public class LocationPortal : MonoBehaviour, IPlayerTriggerable
 {
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private DestinationIdentifier destinationPortal;
-    [SerializeField] private int sceneToLoad = -1;
 
     private PlayerController player;
     private Fader fader;
@@ -35,24 +24,18 @@ public class Portal : MonoBehaviour, IPlayerTriggerable
     {
         this.player = player;
         player.Character.Animator.IsMoving = false;
-        StartCoroutine(SwitchScene());
+        StartCoroutine(Teleport());
     }
 
-    private IEnumerator SwitchScene()
+    private IEnumerator Teleport()
     {
-        DontDestroyOnLoad(gameObject);
-
         GameManager.Instance.PauseGame(true);
         yield return fader.FadeToBlack(fadeDuration);
 
-        yield return SceneManager.LoadSceneAsync(sceneToLoad);
-
-        Portal destPortal = FindObjectsOfType<Portal>().First(x => x != this && x.destinationPortal == destinationPortal);
+        LocationPortal destPortal = FindObjectsOfType<LocationPortal>().First(x => x != this && x.destinationPortal == destinationPortal);
         player.Character.SetPositionAndSnapToTile(destPortal.SpawnPoint.position);
 
         yield return fader.FadeIn(fadeDuration);
         GameManager.Instance.PauseGame(false);
-
-        Destroy(gameObject);
     }
 }

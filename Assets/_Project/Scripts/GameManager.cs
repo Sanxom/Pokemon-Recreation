@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour
         freeRoamCamera.gameObject.SetActive(false);
 
         PokemonParty playerParty = playerController.GetComponent<PokemonParty>();
-        Pokemon wildPokemon = FindObjectOfType<MapArea>().GetComponent<MapArea>().GetRandomWildPokemon();
+        Pokemon wildPokemon = CurrentScene.GetComponent<MapArea>().GetRandomWildPokemon();
 
         // We create this "Copy" in order to animate this copy instead of animating the base wild Pokemon which is just a "template" Pokemon to spawn
         Pokemon wildPokemonCopy = new(wildPokemon.PokemonBase, wildPokemon.Level);

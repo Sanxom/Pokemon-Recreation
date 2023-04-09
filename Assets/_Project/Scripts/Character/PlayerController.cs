@@ -70,7 +70,6 @@ public class PlayerController : MonoBehaviour
         {
             if (collider.TryGetComponent(out IPlayerTriggerable triggerable))
             {
-                character.Animator.IsMoving = false;
                 triggerable.OnPlayerTriggered(this);
                 break;
             }

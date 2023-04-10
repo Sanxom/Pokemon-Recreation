@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrainerController : MonoBehaviour, IInteractable
+public class TrainerController : MonoBehaviour, IInteractable, ISavable
 {
     [SerializeField] private GameObject exclamationGO;
     [SerializeField] private GameObject fovGO;
@@ -33,6 +33,21 @@ public class TrainerController : MonoBehaviour, IInteractable
     private void Update()
     {
         character.HandleUpdate();
+    }
+
+    public object CaptureState()
+    {
+        return battleLost;
+    }
+
+    public void RestoreState(object state)
+    {
+        battleLost = (bool)state;
+
+        if (battleLost)
+            fovGO.SetActive(false);
+        else
+            fovGO.SetActive(true);
     }
 
     public IEnumerator TriggerTrainerBattle(PlayerController player)

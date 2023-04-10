@@ -9298,6 +9298,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1325555755}
     m_Modifications:
+    - target: {fileID: 2720066743859168570, guid: 3e9160c21f10f814385fc041f81da042, type: 3}
+      propertyPath: pokemonList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3847726515092111161, guid: 3e9160c21f10f814385fc041f81da042, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -9348,7 +9352,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3847726515092111167, guid: 3e9160c21f10f814385fc041f81da042, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3893513955400417800, guid: 3e9160c21f10f814385fc041f81da042, type: 3}
+      propertyPath: uniqueId
+      value: 26529931-5455-452d-8e41-bcf2837a4b9a
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e9160c21f10f814385fc041f81da042, type: 3}

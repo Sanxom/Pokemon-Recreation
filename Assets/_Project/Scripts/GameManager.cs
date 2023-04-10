@@ -52,6 +52,16 @@ public class GameManager : MonoBehaviour
         if (currentState == GameState.FreeRoam)
         {
             playerController.HandleUpdate();
+
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                SavingSystem.i.Save("saveSlot1");
+            }
+
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                SavingSystem.i.Load("saveSlot1");
+            }
         }
         else if (currentState == GameState.Battle)
         {

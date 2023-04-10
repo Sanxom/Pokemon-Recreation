@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.TextCore.Text;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, ISavable
 {
     [SerializeField] private GameInput gameInput;
     [SerializeField] private Sprite sprite;
@@ -21,6 +21,23 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         character = GetComponent<Character>();
+    }
+
+    public object CaptureState()
+    {
+        float[] position = new float[] { transform.position.x, transform.position.y };
+        return position;
+    }
+
+    public void RestoreState(object state)
+    {
+        float[] position = (float[])state;
+        transform.position = new Vector3(position[0], position[1]);
+    }
+
+    public Vector2 GetPlayerInputVector()
+    {
+        return inputVector;
     }
 
     public void HandleUpdate()
@@ -41,11 +58,6 @@ public class PlayerController : MonoBehaviour
         {
             Interact();
         }
-    }
-
-    public Vector2 GetPlayerInputVector()
-    {
-        return inputVector;
     }
 
     private void Interact()
